@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="MobileOptimized" content="320">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="x5-orientation" content="portrait">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="browsermode" content="application">
+		<meta name="x5-page-mode" content="app">
+		<meta name="msapplication-tap-highlight" content="no">
+		<link rel="stylesheet" href="./css/amazeui.min.css"/>
+		<link class="css_style" rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./font/iconfont.css"/>
+		<script src="js/flexible.js"></script>
+		<script src="js/vue.js"></script>
+<style type="text/css">
+body{
+	background: #f1f1f9!important;
+}
+#app{
+	display: none;
+	padding-top: 40px;
+}
+/*头部*/
+	.header {
+		height: 40px;
+		background: #46aef7;
+		font-size: .45rem;
+		color: #fff;
+		border-bottom: 1px solid #46aef7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 100;
+	}
+	.header ul, .header ul li {
+		padding: 0;
+		height: 40px;
+		line-height: 40px;
+	}
+	.header_center {
+		text-align: center;
+		overflow: hidden;
+	    white-space: nowrap;
+	    text-overflow: ellipsis;
+	}
+	.header_right {
+		font-size: .42rem;
+		text-align: right;
+		padding-right: 10px !important;
+		cursor: pointer;
+		text-align: right;
+	}
+	.header_left {
+		font-size: .6rem;
+		padding-left: 10px !important;
+		cursor: pointer;
+	}
+	.header_left img{
+		position: absolute;
+		top: 26%;
+		left: 9px;
+		width: 10px;
+		height: 18px;
+	}
+/*头部*/
+
+/*内容*/
+.cont-main{
+	position: relative;
+	overflow: hidden;
+}
+.detail_photo_list img {
+	display: block;
+	width: 100%;
+}
+
+.detail_link iframe {
+	width: 100%;
+}
+
+.accessoriesBox {
+    padding: 0 8px 8px;
+}
+.accessoriesKids {
+    background: #fff;
+    border: 1px solid #f1f1f9;
+    border-radius: 15px;
+    font-size: .4rem;
+    padding: 10px 0;
+    -moz-box-shadow: 0px 1px 10px #5959594a;
+    -webkit-box-shadow: 0px 1px 10px #5959594a;
+    box-shadow: 0px 1px 10px #5959594a;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.adjustments {
+    padding: 0 10px 10px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0!important;
+}
+.icoName img {
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid rgb(229, 229, 229);
+    border-radius: 5px;
+}
+.showName {
+    font-size: .4rem;
+    font-weight: bold;
+}
+.numDaetails {
+    text-align: center;
+    margin-top: 0.2rem;
+    font-weight: normal;
+    font-size: 0.33rem;
+}
+.numDaetails .icon {
+    width: 18px;
+}
+.numDaetails p:nth-of-type(2) {
+    margin-top: 0.1rem;
+}
+.item-bd {
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.userInfo {
+    margin-bottom: 10px;
+}
+.noPadding{
+    padding: 0;
+}
+.userInfo{
+	padding: 0 15px 0 30px;
+    margin-bottom: 7px;
+    font-size: 0.33rem;
+    position: relative;
+}
+.userName {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.item-bd img {
+    position: absolute;
+    left: 6px;
+    top: 1px;
+    width: 18px;
+}
+.collectionIconIng{
+   color: #c2c2c2;
+   font-size: 18px;
+}
+.numDaetails .active, .numDaetails .active .collectionIconIng{
+    color: #ffcc40;
+}
+.callPhone {
+    color: #46aef7;
+}
+.item-ft {
+    margin-top: 10px;
+}
+.scope-img {
+    position: relative;
+    font-size: 0.33rem;
+    text-align: center;
+    color: #898989;
+}
+.scope-img:after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    content: '';
+    display: block;
+    height: 100%;
+    border-right: 1px solid #e5e5e5;
+}
+.scope-img img {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    margin: 0 auto;
+}
+.scope-info {
+    padding-left: 15px;
+}
+.scope-logo.one {
+    text-align: left;
+}
+.scope-logo img {
+    width: 25px;
+    margin: 0 5px 5px 0;
+}
+.scope-name {
+    font-size: 0.33rem;
+}
+.boxLists{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.boxLists .divFont{
+    width: 26%;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    margin: 0 auto;
+    z-index: 1000;
+    margin-top: 67%;
+    text-align: center;
+    padding: 10px;
+}
+.boxLists .divFont img{
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+}
+.boxLists .divFont p{
+    color: #fff;
+    font-size: .42rem;
+    margin-top: 10px;
+}
+.accessoriesKids .numDaetails .viewNum{
+    text-align: center;
+    float: left;
+}
+/*新增*/
+.accessoriesKids .numDaetails .viewNum_atd{
+    padding-left: 0;
+    text-align: var(--fl);
+}
+.com_col{
+	color: var(--c-col);
+}
+.scope-info-more{
+    float: right;color: var(--c-col);
+}
+
+</style>
+	</head>
+	<body style="background-color: #f1f1f9;">
+		<div id="app">
+			<div class="header">
+			   <ul class="am-u-sm-12 clearfix">
+				   <li class="am-u-sm-3 header_left" @click="returnNet"><img src="./img/jt.png" alt=""/></li>
+				   <li class="am-u-sm-6 header_center">{{cacheName}}</li>
+				   <li class="am-u-sm-3 header_right" @click="shareMethod">分享</li>
+			   </ul>
+			</div>
+		  	<div class="cont-main">
+		  		<div class="detail_link" v-if="detailsType==1">
+		  			<iframe :src="detail_link" frameborder="0"></iframe>
+		  		</div>
+		  		<div class="detail_photo_list" v-if="detailsType==2">
+		  			<p v-for="(item, index) in renderData">
+			  			<img :src="item" alt="">
+			  		</p>
+		  		</div>
+		  		<div class="no_detail am-cf" v-if="detailsType==3">
+		  			<ul class="accessoriesBox am-u-sm-12">
+		                <li class="accessoriesKids am-u-sm-12">
+		                    <div class="item-hd adjustments am-u-sm-12">
+		                        <div class="icoName am-u-sm-3 noPadding">
+		                            <img :src="item.cover_url" alt="" v-if="item.cover_url">
+                            		<img src="./img/noLogo.png" v-else>
+		                        </div>
+		                        <div class="item-right am-u-sm-9 noPadding">
+		                            <div class="showName am-u-sm-12 noPadding">
+		                                {{item.name}}
+		                            </div>
+		                            <div class="am-u-sm-12 numDaetails noPadding">
+		                                <div class="am-u-sm-7 viewNum noPadding">
+		                                    <!-- <p><img class="icon" src="./img/viewNum.png" alt=""></p> -->
+		                                    <p class="viewNum_atd"><span>浏览：</span>{{item.spv_num}}</p>
+		                                </div>
+		                                <div class="am-u-sm-4 viewNum noPadding active" @click="collectionMethod(item)" v-if="item.collect_status == 1">
+		                                    <!-- <p style="line-height: 18px;"><i class="iconfont icon-favoritesfilling collectionIconIng"></i></p> -->
+		                                    <p style="margin-top: 0.07rem;">取消收藏</p>
+		                                </div>
+		                                <div class="am-u-sm-4 viewNum noPadding" @click="collectionMethod(item)" v-else="item.collect_status == 0">
+		                                    <!-- <p style="line-height: 18px;"><i class="iconfont icon-favoritesfilling collectionIconIng"></i></p> -->
+		                                    <p class="com_col" style="margin-top: 0.07rem;">收藏店铺</p>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="item-bd am-u-sm-12">
+		                        <!-- <div class="am-u-sm-6 noPadding userInfo userName" v-if="item.contact_name">
+		                            <img src="./img/user.png" alt="">
+		                            {{item.contact_name}}
+		                        </div> -->
+		                        <div class="am-u-sm-6 noPadding userInfo" v-if="item.wechat">
+		                            <img src="./img/weixin.png" alt="">
+		                            {{item.wechat}}
+		                        </div>
+		                        <!-- <div class="am-u-sm-6 noPadding userInfo callPhone" v-if="item.tel" @click="callP(item.tel,'seat',item.id)">
+		                            <img src="./img/telNum.png" alt="">
+		                            {{item.tel}}
+		                        </div>
+		                        <div class="am-u-sm-6 noPadding userInfo callPhone" v-if="item.contact_tel" @click="callP(item.contact_tel,'mobile',item.id)">
+		                            <img src="./img/tel.png" alt="">
+		                            {{item.contact_tel}}
+		                        </div> 
+		                        <div class="am-u-sm-6 noPadding userInfo" v-if="item.email">
+		                            <img src="./img/emial.png" alt="">
+		                            {{item.email}}
+		                        </div>-->
+		                        <div class="am-u-sm-6 noPadding userInfo" v-if="item.qq">
+		                            <img src="./img/qq.png" alt="">
+		                            {{item.qq}}
+		                        </div>
+		                        <div class="am-u-sm-12 noPadding userInfo addres">
+		                            <img src="./img/addres.png" alt="">
+		                            <span>{{item.province}}{{item.city}}{{item.address}}</span>
+		                        </div>
+		                    </div>
+		                    <div class="item-ft am-u-sm-12 noPadding">
+		                        <div class="scope-img am-u-sm-3 noPadding">
+		                            <img src="./img/scope.png" alt="">
+		                            <p>经营范围</p>
+		                        </div>
+		                        <div class="scope-info am-u-sm-9 noPadding">
+		                            <div class="scope-logo" :class="{one: item.brandList.length > 0}">
+		                                <img v-if="v.ico_name!='others_ico'" v-for="(v,k) in item.brandList" :src="['https://www.wanguoqiche.com/files/logo/'+v.ico_name+'.jpg']">
+		                            </div>
+		                            <div class="scope-name">
+		                                {{item.main_business}}
+		                            </div>
+		                        </div>
+		                        <!-- <div class="item-hd am-u-sm-12"><span class="scope-info-more">更多内容</span></div> -->
+		                    </div>
+		                </li>
+		            </ul>
+		  		</div>
+		  	</div>
+		  	<div class="boxLists" v-show="tip">
+	           <div class="divFont">
+	               <img :src="imgUrl" alt=""/>
+	               <p>{{textBox}}</p>
+	           </div>
+	        </div>
+		</div>
+	<script src="js/jquery.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/jnsApi.js"></script>
+	<script src="js/common.js?ver=1.0.1"></script>
+		<!--头部-->
+		<script>
+			$(function(){
+				var vue=new Vue({
+					el:'#app',
+					data:{
+						postData: {//请求参数
+							token: '',
+				   			merchant_id: '',
+						},
+						detailsType: 1,//1：链接详情 2：图片详情 3：没详情
+						renderData: [],//渲染图片数组
+						cacheName: '',//商铺名称
+						detail_link: null,//链接详情
+						item: {
+							id: '',
+							name: '',
+							spv_num: '',
+							collect_status: '',
+							contact_name: '',
+							contact_tel: '',
+							tel: '',
+							wechat: '',
+							email: '',
+							qq: '',
+							province: '',
+							city: '',
+							address: '',
+							main_business: '',
+							cover_url: '',
+							brandList: [],
+						},
+						textBox:'',
+		                tip:false,
+		                imgUrl:'./img/rightLogo.png',
+						shareObj:{}
+					},
+					created: function () {
+						this.postData.token = window.localStorage.getItem('token');
+						this.postData.merchant_id = window._c.getQueryString('merchant_id');
+						this.cacheName = window.sessionStorage.getItem('cacheName') || '详情';
+						this.init();
+					},
+					methods:{
+					   	init: function () {
+					   		var self = this;
+							_c.post('/Common/QualityMerchant/getMerchantDetail', this.postData, function (res) {
+					   			if(res.code == 20000) {
+					   				var data = res.data.info;
+				   					if(data.detail_link) {
+				   						self.detailsType = 1;
+				   						self.detail_link = data.detail_link;
+				   					} else if (data.detail_photo_list.length > 0) {
+				   						self.detailsType = 2;
+				   						self.renderData = data.detail_photo_list;
+				   					} else {
+				   						self.item = {
+				   							id: data.id,
+											name: data.name,
+											spv_num: data.spv_num,
+											collect_status: data.collect_status,
+											contact_name: data.name,
+											contact_tel: data.contact_tel,
+											tel: data.tel,
+											wechat: data.wechat,
+											email: data.email,
+											qq: data.qq,
+											province: data.province,
+											city: data.city,
+											address: data.address,
+											main_business: data.main_business,
+											cover_url: data.cover_url,
+											brandList: data.brand_list,
+										};
+				   						self.detailsType = 3;
+				   					}
+									self.shareObj.shareUrl=window.location.href+'&share=1';
+									self.shareObj.title= data.name;
+									self.shareObj.subtitle=data.main_business;
+									self.shareObj.logo=data.cover_url;
+				   					$('#app').show();
+					   			} else {
+									//window.location.href="./listOfAccessories.html";
+									window.history.back();
+								}
+					   		}, false);
+					   	},
+						returnNet:function(){
+							var goBack = window._c.getQueryString('goBack');
+							if(goBack == 1) {
+								window.location.href="./index.html";
+							} else if (goBack == 2){
+								window.location.href="./listOfAccessories.html?listType=collection";
+							} else if (goBack == 4) {
+								window.location.href="./listOfAccessories.html?isOtherCity=1";
+							} else if (goBack == 5){
+								window.location.href="./more.html";
+							} else {
+								window.location.href="./listOfAccessories.html";
+							}
+						},
+						collectionMethod: function (item) {
+		                    var obj ={};
+		                    var url = '';
+		                    var self =this;
+		                    var status = item.collect_status;
+		                    obj.token = this.postData.token;
+		                    obj.merchant_id = item.id;   
+		                    url = status == 0 ? '/QualityMerchant/Merchant/addCollect': '/QualityMerchant/Merchant/cancelCollect';
+		                    _c.post(url, obj, function(res){
+		                        if(res.code == 20000){
+		                            vue.tip = true;
+		                            if(status === 0){
+		                                item.collect_status = 1;
+		                                self.textBox = '收藏成功';
+		                            }else{
+		                                item.collect_status = 0;
+		                                self.textBox = '取消成功';
+		                            }
+		                            self.imgUrl = './img/rightLogo.png';
+		                        }else{
+		                             self.textBox = '操作超时';
+		                             self.imgUrl='./img/overTime.png';
+		                        }
+		                        setTimeout(function(){
+		                            self.tip = false;
+		                        },1000);
+		                    });
+		                },
+		                callP:function(phone,type,id){//拨打手机号码
+		                    var token = window.localStorage.getItem('token');
+		                    var objDatas = {};
+		                       objDatas.token = token;
+		                       objDatas.event_type = 2;
+		                       objDatas.event_stype = 1;
+		                       objDatas.value1 = id;
+		                       objDatas.value2 = phone;
+		                       objDatas.event_gstype = (type=='seat') ? 1 : 2;
+		                       this.callRequest(objDatas);
+		                       _c.callphone(window.localStorage.getItem('status'),phone);
+		                },
+		                callRequest:function(objDatas){ //点击量
+		                    _c.post('/Event/EventLog/addEventLog',objDatas,function(res){},true);
+		                },
+						shareMethod:function(){
+						    var o=this.shareObj;
+						        window.jnsApi.share(o);
+						}
+					}
+				});
+				var obj={
+					init:function(){
+						obj.initPage();
+						obj.bind();
+						obj.setFrameHeight();
+					},
+					initPage:function(){
+						var arrUrl=window.location.href.split('?');
+						var valUrl=arrUrl[1].split('&');
+						var this_obj={};
+						$.each(valUrl,function(i,items){
+							var this_Arr=items.split('=');
+							var key=this_Arr[0];
+							var val=this_Arr[1];
+							this_obj[key]=val;
+						});
+						if(this_obj.share){
+                               $('.header_left').hide();
+							   $('.header_right').hide();
+							   $('.header_center').addClass('am-u-sm-12');
+						}
+					},
+					bind:function(){
+                        $(window).on('resize',function(){
+		                    obj.setFrameHeight(); 
+		                });
+					},
+					setFrameHeight: function () {
+						var $height = $(window).height() - $('.header').height();
+						$('.detail_link iframe').height($height);
+					}
+				};
+				obj.init();
+			})
+		</script>
+	</body>
+</html>

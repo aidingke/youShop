@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="MobileOptimized" content="320">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="x5-orientation" content="portrait">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="browsermode" content="application">
+		<meta name="x5-page-mode" content="app">
+		<meta name="msapplication-tap-highlight" content="no">
+		<link rel="stylesheet" href="./css/amazeui.min.css"/>
+		<link class="css_style" rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/search.css"/>
+		<script src="js/flexible.js"></script>
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+	  <div id="app" class="am-g">
+		    <div class="header">
+			   <ul class="am-u-sm-12 cm-cf">
+				   <li class="am-u-sm-3 header_left" @click="returnMethods"><img src="./img/jt.png" alt=""/></li>
+				   <li class="am-u-sm-6 header_center">搜索</li>
+				   <li class="am-u-sm-3 header_right"></li>
+			   </ul>
+			</div>
+		    <div class="am-u-sm-12 am-cf search_main">
+				<div class="am-u-sm-12 brandNameSearch"><input type="text" placeholder="请输入配件名称或品牌" v-model="keyword"/></div>
+				<div class="am-u-sm-12 brandContents" v-if="keyword">
+					<ul class="am-u-sm-12 am-cf">
+						<li class="am-cf" @click="searchKeyWordHandle(false)">
+							<div class="am-u-sm-12" style="color:#46aef7;">{{keyword}}</div>
+						</li>
+					</ul>
+				</div>
+				<div class="am-u-sm-12 brandContents" v-if="historyArr.length > 0">
+					<ul class="am-u-sm-12 am-cf">
+						<li class="am-cf" v-for="(v, k, index) in historyArr" :key="k">
+							<div class="am-u-sm-10" @click="searchKeyWordHandle(v)">{{v}}</div>
+							<div class="am-u-sm-2 brandLiClose" @click="closeHandle(k)">Close</div>
+							<span class="closeItem"></span>
+						</li>
+					</ul>
+				</div>
+			</div>
+	  </div>
+	<script src="js/jquery.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/jnsApi.js"></script>
+	<script src="js/common.js"></script>
+		<!--头部-->
+		<script>
+			$(function(){
+				var vue=new Vue({
+					el:'#app',
+					data:{
+						keyword: '',
+						historyArr: [],
+					},
+					methods:{
+						returnMethods:function(){
+                           window.location.href="./index.html";
+						},
+					    searchKeyWordHandle: function(str){ //搜索关键字
+					    	if(!str) {
+					    		var historyStr = localStorage.getItem('history') || '';
+	                          	if(historyStr) {
+	                          		historyStr += ','+this.keyword;
+	                          	}else{
+	                          		historyStr += this.keyword;
+	                          	}
+	                          	localStorage.setItem('history', historyStr);
+					    	}
+					    	window.sessionStorage.setItem('cacheBrandName', str?str:this.keyword);//设置品牌名称缓存
+                          	window.location.href="./listOfAccessories.html?listType=serchList";
+					    },
+					    closeHandle: function (index) {
+					    	this.historyArr.splice(index, 1);
+					    	if(this.historyArr.length > 0) {
+					    		var tempHistoryStr = this.historyArr.join(',');
+					    		var tempHistoryArr = tempHistoryStr.split(',').reverse();
+					    		localStorage.setItem('history', tempHistoryArr.join(','));
+					    	} else {
+					    		localStorage.setItem('history', '');
+					    	}
+					    	
+					    }
+					}
+				});
+				var obj={
+					init:function(){
+						var dataStr = localStorage.getItem('history') || '';
+						if(dataStr) {
+							vue.historyArr = obj.uniqArr(dataStr);
+						}
+						$('.search_main').show()
+						this.bind();
+					},
+					bind:function(){
+
+					},
+					uniqArr: function (dataStr) {//数据去重
+						var data = dataStr.split(',').reverse();
+						var temp = [];
+						data && $.each(data, function (i, v) {
+							if(temp.indexOf(v) == -1) {
+								temp.push(v);
+							}
+						});
+						return temp.splice(0, 20);
+					}
+				};
+				obj.init();
+			})
+		</script>
+	</body>
+</html>

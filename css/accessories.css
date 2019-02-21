@@ -1,0 +1,252 @@
+.am-u-sm-12,
+.am-u-sm-4,
+.am-u-sm-8,
+.am-u-sm-3,
+.am-u-sm-6,
+.am-u-sm-9{
+    padding: 0;
+}
+body{
+    background: #f1f1f9;
+}
+#app{
+    padding-top: 40px;
+    background: #f1f1f9;
+}
+/*头部导航栏*/
+.header {
+    height: 40px;
+    background: #46aef7;
+    font-size: .45rem;
+    color: #fff;
+    border-bottom: 1px solid #46aef7;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header ul, .header ul li {
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+}
+
+.header_center {
+    text-align: center;
+}
+
+.header_right {
+    font-size: .42rem;
+    text-align: right;
+    padding-right: 10px !important;
+    cursor: pointer;
+}
+
+.header_left {
+    font-size: .6rem;
+    padding-left: 10px !important;
+    cursor: pointer;
+    position: relative;
+}
+.header_left img{
+    position: absolute;
+    top: 26%;
+    left: 9px;
+    width: 10px;
+    height: 18px;
+}
+/*头部*/
+.brandNameSearch{
+    padding: 8px;
+    padding-bottom: 0px;
+}
+.brandNameSearch input{
+    width: 100%;
+    background: #fff;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: .4rem;
+    border: none;
+}
+/*列表*/
+.accessoriesBox{
+    padding: 8px;
+}
+.accessoriesKids{
+    background: #fff;
+    border: 1px solid #f1f1f9;
+    border-radius: 15px;
+    font-size: .4rem;
+    padding: 10px 0;
+    -moz-box-shadow:0px 1px 10px #5959594a;
+    -webkit-box-shadow: 0px 1px 10px #5959594a;
+    box-shadow: 0px 1px 10px #5959594a;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.accessoriesKids ul li{
+    padding: 0 10px;
+}
+.combination li{
+    overflow: hidden;
+}
+.combination li span{
+    float: left;
+    color: #67c89d;
+    text-align: center;
+    border: 1px solid #67c89d;
+    border-radius: 10px;
+    padding: 2px 22px 2px 22px;
+    margin: 1%;
+    font-size: .3rem;
+}
+.text_company{
+    font-size: .4rem;
+    font-weight: bold;
+}
+.accessoriesBox{
+    padding-top: 0px!important;
+}
+.collectionIcon{
+    float: right;
+    color: #b8b8b8;
+    height: 28px;
+    line-height: 27px;
+    font-size: .38rem!important;
+}
+.collectionIcon.active{
+    color: #ffcc40;
+    font-size: .38rem;
+}
+/*111*/
+.boxLists{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.boxLists .divFont{
+    width: 26%;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    margin: 0 auto;
+    z-index: 1000;
+    margin-top: 67%;
+    text-align: center;
+    padding: 10px;
+}
+.boxLists .divFont img{
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+}
+.boxLists .divFont p{
+    color: #fff;
+    font-size: .42rem;
+    margin-top: 10px;
+}
+.temporary{
+    text-align: center;
+}
+.temporary li{
+    padding: 30px 12px;
+    font-size: .4rem;
+    color: red;
+}
+/**搜索遮罩*!/*/
+.mask{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 100;
+    display: none;
+}
+.mask .boxList{
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 50%;
+    overflow: hidden;
+}
+.mask .boxList ul{
+    width: 100%;
+}
+.mask .boxList .header_box{
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.mask .mask_header_box{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    font-size: .5rem;
+}
+.mask .mask_header_box img{
+    width: 10%;
+}
+.mask .mask_center_box{
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    font-size: .45rem;
+}
+.mask .mask_btn_box{
+    border-top: 1px solid#e5e5e5;
+    overflow: hidden;
+}
+.mask .mask_btn_box span:nth-child(1){
+    border-right: 1px solid #e5e5e5;
+}
+.mask .mask_btn_box span{
+    width: 50%;
+    display: block;
+    float: left;
+    text-align: center;
+    padding: 10px;
+    font-size: .45rem;
+}
+.mask .centerBtn{
+    background: #46aef7;
+    color: #fff;
+}
+@media screen and (min-width: 650px) {
+  .brandNameSearch input{
+    height:40px;
+    line-height:40px;
+  }
+}
+@media screen and (max-width: 320px) {
+    .mask .boxList{
+        width: 280px;
+    }
+}
+/**/
+.collections{
+  position: relative;
+}
+.collection_close{
+    position: absolute;
+    right: -40px;
+    top: 0;
+}
+.adjustments{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0!important;
+}
+.accessoriesKids ul{
+    margin-top: 5px;
+}
+
+

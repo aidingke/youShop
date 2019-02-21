@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>优供商城</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="./css/amazeui.min.css"/>
+    <link class="css_style" rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/accessories.css"/>
+    <link rel="stylesheet" href="./font/iconfont.css"/>
+    <script src="js/vue.js"></script>
+    <script src="js/flexible.js"></script>
+<style type="text/css">
+    .showData .tip{
+        padding: 10px 10px 0;
+        text-align: center;
+        color: #d2d2d4;
+    }
+    .tip img {
+        width: 18px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    .icoName  img {
+        width: 1.8rem;
+        height: 1.8rem;
+        border: 1px solid rgb(229, 229, 229);
+        border-radius: 5px;
+    }
+    .item-hd {
+        padding: 0 10px 10px;
+    }
+    .showName{
+        font-size: .4rem;
+        font-weight: bold;
+    }
+    .numDaetails{
+        font-weight: normal;
+        font-size: 0.33rem;
+    }
+    .numDaetails {
+        margin-top: 0.2rem;
+    }
+    .numDaetails .icon{
+        width: 18px;
+    }
+    .numDaetails p:nth-of-type(2) {
+        margin-top: 0.1rem;
+    }
+    .item-bd{
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .noPadding{
+        padding: 0;
+    }
+    .userInfoDiv {
+        padding: 0 4px 0 30px;
+        margin-bottom: 7px;
+        font-size: 0.33rem;
+        position: relative;
+    }
+    .item-bd img {
+        position: absolute;
+        left: 6px;
+        top: 1px;
+        width: 18px;
+    }
+    .userName{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .userInfo{
+        margin-bottom: 10px;
+    }
+    .item-ft {
+        margin-top: 10px;
+    }
+    .scope-img {
+        position: relative;
+        font-size: 0.33rem;
+        text-align: center;
+        color: #898989;
+    }
+    .scope-img img {
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        margin: 0 auto;
+    }
+    .scope-img:after{
+        position: absolute;
+        right: 0;
+        top: 0;
+        content: '';
+        display: block;
+        height: 100%;
+        border-right: 1px solid #e5e5e5;
+    }
+    .scope-info{
+        padding-left: 15px;
+    }
+    .scope-logo{
+        text-align: center;
+    }
+    .scope-logo.one{
+        text-align: left;
+    }
+    .scope-logo img{
+        width: 25px;
+        margin: 0 5px 5px 0;
+    }
+    .scope-name{
+        font-size: 0.33rem;
+    }
+    .checkMore{
+        padding: 10px;
+        text-align: center;
+        color: #67baf6;
+    }
+    .collectionIconIng{
+       color: #c2c2c2;
+       font-size: 18px;
+    }
+    .numDaetails .active, .numDaetails .active .collectionIconIng{
+        color: #ffcc40;
+    }
+    .collection_close{
+        display: none;
+        right: -12px;
+    }
+    .callPhone{
+        color: #46aef7;
+    }
+    .noDataImg {
+        display: block;
+        width: 84px;
+        margin: 0 auto;
+    }
+    .errorTip{
+        margin: 10px 0;
+        color: #bfbfc1;
+    }
+    .total{
+        color: #46aef7;
+        margin: 0 5px;
+    }
+    .accessoriesKids .numDaetails .viewNum{
+        text-align: center;
+        float: left;
+    }
+    .accessoriesKids .numDaetails .viewNum:nth-of-type(2){
+        width: 41.66666667%;
+    }
+
+    /*新增*/
+    .viewNum .com_r{text-align: var(--fr);}
+    .accessoriesKids .numDaetails .viewNum_atd{
+        padding-left: 0;
+        text-align: var(--fl);
+    }
+    .scope-info-more{
+        float: var(--fr);color: var(--c-col);
+    }
+</style>
+</head>
+<body>
+    <div id="app" class="am-g" style="display: none;">
+        <div class="header">
+            <ul class="am-u-sm-12 clearfix">
+                <li class="am-u-sm-3 header_left" @click="returnLink"><img src="./img/jt.png" alt=""/></li>
+                <li class="am-u-sm-6 header_center">{{headerName}}</li>
+                <li class="am-u-sm-3 header_right"></li>
+            </ul>
+        </div>
+        <div class="am-u-sm-12 clearfix" v-if="collectionLength">
+          <div class="am-u-sm-12 brandNameSearch"><input type="text" class="collectSearch" :placeholder="inputPlaceText" v-model="postData.keyword"></div>
+        </div>
+        <div class="am-u-sm-12 showData" v-if="!noDataBool">
+            <p v-if="showNationwide" class="tip am-u-sm-12"><img src="./img/xinxi.png" alt="">在常用城市已找到<span class="total">{{total}}</span>条结果</p>
+            <ul class="accessoriesBox am-u-sm-12">
+                <li class="accessoriesKids am-u-sm-12" v-for="(item, index) in itemsDatas">
+                    <div class="item-hd adjustments am-u-sm-12">
+                        <div class="icoName am-u-sm-3">
+                            <img :src="item.cover_url" alt="" v-if="item.cover_url">
+                            <img src="./img/noLogo.png" v-else>
+                        </div>
+                        <div class="item-right am-u-sm-9">
+                            <div class="showName am-u-sm-12">
+                                {{item.name}}
+                                <span class="collection_close" style="float: right;"><img src="./img/delete.png" alt="" style="width: 70%;"></span>
+                            </div>
+                            <div class="am-u-sm-12 numDaetails">
+                                <div class="am-u-sm-7 viewNum viewNum_atd">
+                                    <!-- <p><img class="icon" src="./img/viewNum.png" alt=""></p> -->
+                                    <p><span>浏览：</span>{{item.spv_num}}</p>
+                                </div>
+                                <!-- <div class="am-u-sm-5 viewNum noPadding" @click="handleDetails(item)" v-if="item.detail_link || item.detail_photo_list.length > 0">
+                                    <p><img class="icon" src="./img/details.png" alt=""></p>
+                                    <p>详情</p>
+                                </div> -->
+                                <div class="am-u-sm-4 active viewNum" @click="collectionMethod(item)" v-if="item.collect_status == 1">
+                                    <p style="line-height: 18px;"><!-- <i class="iconfont icon-favoritesfilling collectionIconIng"></i> --></p>
+                                    <p class="com_r" style="margin-top: 0.07rem;">取消收藏</p>
+                                </div>
+                                <div class="am-u-sm-4 viewNum" @click="collectionMethod(item)" v-else>
+                                    <p style="line-height: 18px;"><!-- <i class="iconfont icon-favoritesfilling collectionIconIng"></i> --></p>
+                                    <p class="com_r" style="margin-top: 0.07rem;color: #46aef7;">收藏店铺</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-bd am-u-sm-12">
+                        <!-- <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.tel" @click="callP(item.tel,'seat',item.id)">
+                            <img src="./img/telNum.png" alt="">
+                            {{item.tel}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.contact_tel" @click="callP(item.contact_tel,'mobile',item.id)">
+                            <img src="./img/tel.png" alt="">
+                            {{item.contact_tel}}
+                        </div> -->
+
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.qq">
+                            <img src="./img/qq.png" alt="">
+                            {{item.qq}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.wechat">
+                            <img src="./img/weixin.png" alt="">
+                            {{item.wechat}}
+                        </div>
+                        <!--<div class="am-u-sm-6 userInfoDiv" v-if="item.email">-->
+                            <!--<img src="./img/emial.png" alt="">-->
+                            <!--{{item.email}}-->
+                        <!--</div>-->
+                        <!--<div class="am-u-sm-6 userInfoDiv userName" v-if="item.contact_name">-->
+                            <!--<img src="./img/user.png" alt="">-->
+                            <!--{{item.contact_name}}-->
+                        <!--</div>-->
+                        <div class="am-u-sm-12 userInfoDiv addres">
+                            <img src="./img/addres.png" alt="">
+                            <span>{{item.province}}{{item.city}}{{item.address}}</span>
+                        </div>
+                    </div>
+                    <div class="item-ft am-u-sm-12" @click="handleDetails(item)" >
+                        <div class="scope-img am-u-sm-3">
+                            <img src="./img/scope.png" alt="">
+                            <p>经营范围</p>
+                        </div>
+                        <div class="scope-info am-u-sm-9 userInfoDiv">
+                            <div class="scope-logo" :class="{one: item.brand_list && item.brand_list.length > 0}">
+                                <img v-if="v.ico_name!='others_ico'" v-for="(v,k) in item.brand_list" :src="['https://www.wanguoqiche.com/files/logo/'+v.ico_name+'.jpg']">
+                            </div>
+                            <div class="scope-name">
+                                {{item.main_business}}
+                            </div>
+                        </div>
+                        <div class="item-hd am-u-sm-12" v-if="item.detail_link || item.detail_photo_list.length > 0"><span class="scope-info-more">更多内容</span></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 暂无数据-->
+        <div class="am-u-sm-12 temporary" v-else>
+          <ul class="am-u-sm-12">
+              <li class="am-u-sm-12">
+                  <img src="./img/noData.png" class="noDataImg" alt="">
+                  <p class="errorTip">在常用城市未找到结果</p>
+              </li>
+          </ul>
+        </div>
+        <p v-if="showNationwide" class="checkMore am-u-sm-12" @click="searchAllHandle">查看更多城市的搜索结果</p>
+        <div class="boxLists" v-show="tip">
+           <div class="divFont">
+               <img :src="imgUrl" alt=""/>
+               <p>{{textBox}}</p>
+           </div>
+        </div>
+        <div class="mask">
+            <div class="boxList">
+                <ul>
+                    <li class="mask_header_box"><img src="./img/xinxi.png" alt=""/> 提示 </li>
+                    <li class="mask_center_box">是否取消收藏？</li>
+                    <li class="mask_btn_box">
+                        <span class="centerBtn" @click="deleteOkHandle">确定</span>
+                        <span class="cancelBtn" @click="cancel">取消</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<script src="js/jquery.js"></script>
+<script src="js/config.js"></script>
+<script src="js/jnsApi.js"></script>
+<script src="js/common.js"></script>
+<script>
+    $(function(){
+        var vue=new Vue({
+            el:'#app',
+            data:{
+               headerName:'搜索',
+               arrs:null,
+               types:'',
+               collectionDats:[],
+               inputPlaceText:'请输入配件名称或品牌',
+               postData: {//请求参数
+                    token: '',
+                    keyword: '',
+                    page: 1,
+                    pagesize: 10,
+               },
+                lock: false,//请求次数
+                total: '',//总条数
+                noDataBool: false,//控制商品列表是否加载v-if
+                textBox:'',
+                tip:false,
+                imgUrl:'./img/rightLogo.png',
+                itemsDatas: [],
+                timeOut: null,
+                showNationwide: true,//是否显示展示全国按钮
+                listType: 'serchList',//列表类型
+                collectionLength: true,
+                delItem: null,//删除收藏数组
+                firstComing: false,
+                url:'',//url链接
+                loadingBool:'',//加载。。
+                randomArray:[],//页面码数组
+                nowDatasArr:[],//新加数据数组
+                randomArrayLength:0//（0:收藏列表;大于0:商品列表;）
+            },
+            methods:{
+                returnLink:function(){
+                    if (this.listType=='more') {
+                        window.location.href="more.html";
+                    } else {
+                        window.location.href="index.html";
+                    }
+                },
+                init: function (isLoading) { //初始化数据
+                    var self = this;
+                    var url = '';
+                        self.loadingBool = null;
+                        this.postData.token = window.localStorage.getItem('token');
+                    if(!window.sessionStorage.getItem('cityCache') && self.listType != 'collection') { //判断是否有常用城市
+                        this.postData.city = window.localStorage.getItem('city');
+                    }
+                    if(this.listType == 'collection') {//收藏列表
+                        url = '/QualityMerchant/Merchant/getCollectList';
+                    } else {//商品列表
+                        url = '/QualityMerchant/Merchant/getMerchantList';
+                    }
+                    this.url=url;
+                    if(isLoading == 3) {//isLoading（3:商品查询;1:滚动分页;）控制请求是否有加载效果
+                        self.loadingBool = true;
+                    } else if(isLoading==1){
+                        self.loadingBool = false;
+                    }else{
+                        self.loadingBool = true;
+                    }
+                    var this_collectSearch= this.postData.keyword;//输入查询值
+                    _c.showLoading();
+                    _c.post(url, this.postData ,function (res) {
+                        if(res.code == 20000) {
+                            if( res.data.list && res.data.list.length > 0) {//判断有没有数据
+                                if(self.listType == 'collection') {
+                                //收藏列表
+                                    if(res.toatal > self.postData.pagesize * 2) {
+                                        self.collectionLength = true;
+                                    } else {
+                                        self.collectionLength = false;
+                                    }
+                                    $.each(res.data.list, function (i, v) {
+                                        v.collect_status = 1;
+                                    });
+                                }
+                                self.noDataBool = false;
+                                self.total = res.total;
+                                if(isLoading == 1) {
+                                    self.itemsDatas = self.itemsDatas.concat(res.data.list?res.data.list:[]);
+                                } else {
+                                     if(this_collectSearch){
+                                     //商户列表输入框有值
+                                         _c.hideLoading();
+                                     }else if(self.listType == 'collection'){
+                                     //收藏列表
+                                         _c.hideLoading();
+                                     }
+                                     if(self.listType=='collection'){
+                                     //收藏列表
+                                        self.itemsDatas=res.data.list?res.data.list:[];
+                                     }else{
+                                     //商品列表
+                                         if(vue.total > vue.postData.pagesize * vue.postData.page){
+                                             self.nowDatasArr = res.data.list?res.data.list:[];
+                                         }else{
+                                             self.itemsDatas=res.data.list?res.data.list:[];         
+                                         }
+                                     }
+                                }
+                            } else {
+                                if(this_collectSearch){
+                                    _c.hideLoading();
+                                }else if(self.listType == 'collection'){
+                                    _c.hideLoading();
+                                }
+                                self.noDataBool = true;
+                            }
+                            self.lock = false;
+                            if(res.data.is_other_city && res.data.is_other_city == 1) {
+                                self.showNationwide = true;
+                            } else {
+                                self.showNationwide = false;
+                            }
+                            if(!isLoading||isLoading==3){
+                                if(self.listType!='collection'){
+                                    if(vue.total > vue.postData.pagesize * vue.postData.page){
+                                        setTimeout(function(){
+                                            self.randomNumberMethod(function(){
+                                                _c.hideLoading();
+                                            });
+                                        },500);
+                                    }
+                                }
+                            }
+                        } else {
+                            self.noDataBool = true;
+                        }
+                        window.sessionStorage.setItem('cacheBrandName', self.postData.keyword);
+                        $('#app').show();
+                    }, self.loadingBool);
+                },
+                collectionMethod: function (item) {
+                    if(this.listType == 'collection') {
+                        this.delItem = item;
+                        $('.mask').show();
+                    } else {
+                        var obj ={};
+                        var url = '';
+                        var self =this;
+                        var status = item.collect_status;
+                        obj.token = this.postData.token;
+                        obj.merchant_id = item.id;   
+                        url = status == 0 ? '/QualityMerchant/Merchant/addCollect': '/QualityMerchant/Merchant/cancelCollect';
+                        _c.post(url, obj, function(res){
+                            if(res.code == 20000){
+                                vue.tip = true;
+                                if(status === 0){
+                                    item.collect_status = 1;
+                                    self.textBox = '收藏成功';
+                                }else{
+                                    item.collect_status = 0;
+                                    self.textBox = '取消成功';
+                                }
+                                self.imgUrl = './img/rightLogo.png';
+                            }else{
+                                 self.textBox = '操作超时';
+                                 self.imgUrl='./img/overTime.png';
+                            }
+                            setTimeout(function(){
+                                self.tip = false;
+                            },1000);
+                        });
+                    }
+                },
+                handleDetails: function (item) {//详情
+                    //如果有更多就执行点击操作,else 就执行冒泡处理
+                    if(item.detail_link || item.detail_photo_list.length > 0){
+                        window.sessionStorage.setItem('cacheName', item.name);//设置商户名称
+                        var goBack = 3;
+                        if(this.listType == 'collection') { //收藏列表
+                            goBack = 2;
+                        } else if (this.listType == 'more') {
+                            goBack = 5;
+                        }
+                        if(this.postData.is_other_city == 1) {
+                            goBack = 4;
+                        }
+                        window.location.href="./showDetails.html?goBack="+goBack+"&merchant_id=" + item.id;
+                    }else{
+                        //不执行跳转
+                    }
+                },
+                callP:function(phone,type,id){//拨打手机号码
+                    var token = window.localStorage.getItem('token');
+                    var objDatas = {};
+                        objDatas.token = token;
+                        objDatas.event_type = 2;
+                        objDatas.event_stype = 1;
+                        objDatas.value1 = id;
+                        objDatas.value2 = phone;
+                        objDatas.event_gstype = (type=='seat') ? 1 : 2;
+                        this.callRequest(objDatas);
+                        _c.callphone(window.localStorage.getItem('status'),phone);
+                },
+                callRequest:function(objDatas){ //点击量
+                    _c.post('/Event/EventLog/addEventLog',objDatas,function(res){},true);
+                },
+                searchAllHandle: function () {//搜索全部城市
+                    this.postData.page = 1;
+                    this.itemsDatas = [];
+                    this.postData.is_other_city = 1;
+                    this.init();
+                    this.showNationwide = false;
+                    $(window).scrollTop(0);
+                },
+                cancel:function(){//取消删除收藏
+                    $('.mask').hide();
+                },
+                deleteOkHandle: function () {//确定删除
+                    if(this.delItem) {
+                        var obj ={};
+                        var url = '';
+                        var self =this;
+                        obj.token = this.postData.token;
+                        obj.merchant_id = this.delItem.id;   
+                        url = '/QualityMerchant/Merchant/cancelCollect';
+                        _c.post(url, obj, function(res){
+                            if(res.code == 20000){
+                                vue.tip = true;
+                                self.textBox = '取消成功';
+                                self.imgUrl = './img/rightLogo.png';
+                                var currentIndex = self.itemsDatas.indexOf(self.delItem);
+                                self.itemsDatas.splice(currentIndex, 1);
+                                $('.mask').hide();
+                            }else{
+                                self.textBox = '操作超时';
+                                self.imgUrl='./img/overTime.png';
+                            }
+                            setTimeout(function(){
+                                self.tip = false;
+                            },1000);
+                        });
+                    }
+                },
+                randomNumberMethod:function(callback){//处理列表随机页码数
+                    var this_=this;
+                    var index=Math.ceil(Number(this_.total)/(Number(this_.postData.pagesize)));
+                    var randomNumber=Math.floor(Math.random()*index+1);//随机页码
+                        this_.postData.page=randomNumber;
+                        if(index){
+                            for(var i=1;i<=index;i++){
+                                this_.randomArray.push(i);
+                            }
+                        }
+                        this_.randomArray.splice(this_.randomArray.indexOf(this_.postData.page),1);
+                        _c.post(this_.url,this_.postData,function(res){
+                            if(res.code==20000){
+                                if((this_.randomArray.length>0)&&(res.data.list.length<this_.postData.pagesize)){
+                                    this_.itemsDatas = this_.nowDatasArr.concat(res.data.list?res.data.list:[]);
+                                    this_.randomArray.splice(this_.randomArray.indexOf(1),1);
+                                }else{
+                                    this_.itemsDatas=[];
+                                    this_.itemsDatas=res.data.list;
+                                }
+                            }
+                        },true);
+                        this_.randomArrayLength=this_.randomArray.length;
+                        callback();
+                }
+            },
+            watch:{
+                'postData.keyword':function (val) {//输入值的查询
+                    var loadingBool = 3;
+                    if(!vue.firstComing){//firstComing标志,第一次进入页面,输入框查询有值发生变化,不执行。
+                        loadingBool = '';
+                        vue.firstComing = true;
+                        return false;
+                    }
+                    var self = this;
+                    this.postData.page = 1;
+                    this.postData.is_other_city = 0;
+                    this.randomArray=[];
+                    clearTimeout(this.timeOut);
+                    this.timeOut = setTimeout(function () {
+                        self.init(loadingBool);
+                    }, 500);
+                }
+            },
+            created:function(){
+                var listType = decodeURI(_c.getQueryString('listType'));
+                var cacheBrandName = window.sessionStorage.getItem('cacheBrandName') || '';//品牌名称缓存
+                this.listType = listType;
+                if(listType == 'collection') {
+                    this.showNationwide = false;
+                    this.headerName = '收藏列表';
+                } else {
+                    this.postData.keyword = cacheBrandName;
+                }
+                if(_c.getQueryString('isOtherCity') == 1) {
+                    this.postData.is_other_city = 1;
+                } else if (listType != 'collection') {
+                    this.postData.is_other_city = 0;
+                }  
+                this.init();              
+            }
+        });
+        var obj={
+            init:function(){
+              obj.bind();
+            },
+            bind:function(){
+                $(window).on('scroll', function () {
+                //滚动分页加载
+                    var domHeight = $('#app').height();
+                    if (domHeight - $(window).scrollTop() - $(window).height() < 30) {
+                        if(vue.randomArrayLength>0) {
+                        //商品列表:滚动加载分页
+                            if(vue.total > vue.itemsDatas.length) {
+                                if(!vue.lock) {
+                                    var this_index=vue.randomArray[0];
+                                    vue.postData.page = this_index;
+                                    vue.lock = true;
+                                    vue.init(1);
+                                    vue.randomArray.splice(vue.randomArray.indexOf(vue.randomArray[0]),1);
+                                    vue.randomArrayLength=vue.randomArray.length;
+                                }
+                            }
+                        }else if(vue.randomArrayLength==0){
+                        //收藏列表:滚动加载分页
+                            if(vue.total > vue.itemsDatas.length ) {
+                                if(!vue.lock) {
+                                    vue.postData.page += 1;
+                                    vue.lock = true;
+                                    vue.init(1);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        obj.init();
+    })
+</script>
+</body>
+</html>

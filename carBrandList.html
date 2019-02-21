@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="MobileOptimized" content="320">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="x5-orientation" content="portrait">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="browsermode" content="application">
+		<meta name="x5-page-mode" content="app">
+		<meta name="msapplication-tap-highlight" content="no">
+		<link rel="stylesheet" href="./css/amazeui.min.css"/>
+		<link class="css_style" rel="stylesheet" href="./css/common.css" />
+		<script src="js/flexible.js"></script>
+		<script src="js/vue.js"></script>
+<style type="text/css">
+/*头部*/
+/*头部导航栏*/
+.header {
+	height: 40px;
+	background: #46aef7;
+	font-size: .45rem;
+	color: #fff;
+	border-bottom: 1px solid #46aef7;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+}
+.header ul, .header ul li {
+	padding: 0;
+	height: 40px;
+	line-height: 40px;
+}
+.header_center {
+	text-align: center;
+}
+.header_right {
+	font-size: .42rem;
+	text-align: right;
+	padding-right: 10px !important;
+	cursor: pointer;
+}
+.header_left {
+	font-size: .6rem;
+	padding-left: 10px !important;
+	cursor: pointer;
+}
+.header_left img{
+	position: absolute;
+	top: 26%;
+	left: 9px;
+	width: 10px;
+	height: 18px;
+}
+/*内容*/
+.picker-main{
+	display: none;
+	padding-top: 83%;
+	background: #fff;
+}
+.navbar.active{
+	background: #fff;
+}
+.picker-conts dt {
+	font-size: 0.4rem;
+    background-color: #efefef;
+    padding: 8px 20px;
+}
+.dd_select {
+    height: 56px;
+    border-bottom: 1px solid #dbdbdb;
+    margin-top: 0px;
+    cursor: pointer;
+}
+.dd_select a {
+	position: relative;
+	color: #535353;
+	padding: 8px 20px 8px 40px;
+	display: block;
+}
+.dd_select a:focus, .dd_select a:hover{
+	color: #535353;
+	text-decoration: none;
+}
+.dd_select img {
+    width: 50px;
+    height: 40px;
+    margin-right: 10px;
+    display: block;
+    float: left;
+}
+.dd_select span {
+    display: block;
+    line-height: 40px;
+    font-size: 0.4rem;
+}
+.picker-main .prompt {
+    display: block;
+    width: 1.4rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    font-size: 0.6rem;
+    border-radius: 10px;
+    background-color: #999;
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    font-weight: 600;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 102;
+}
+.navbar a:hover{
+	text-decoration: none;
+}
+
+.fixed{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    background: #fff;
+    z-index: 100;
+}
+.serachFrame {
+    top: 40px;
+}
+.currentCityFrame{
+    top: 90px;
+}
+.currentCity-select{
+	display: none;
+    top: 134px;
+}
+.searchBox {
+    padding: 8px;
+    background: #f1f1f9;
+}
+.searchInput {
+    width: 100%;
+    background: #fff;
+    height: 34px;
+    line-height: 34px;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    font-size: .4rem;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.currentCity-title {
+    background-color: #fff;
+    padding: 10px;
+    font-size: .4rem;
+    padding-right: 15px;
+}
+.currentCity-select a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 8px 0 0 0.32rem;
+    border: 1px solid #efeff4;
+    border-radius: 10px;
+    color: #333;
+    font-size: 0.35rem;
+    text-decoration: none !important;
+}
+.circle{
+    background: #ccc;
+    color: #fff;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    margin-top: -10px;
+}
+.active.dd_select .circle, .brandList-ul li.active .circle{
+    background: #46aef7;
+}
+.circle:after{
+    box-sizing: content-box;
+    content: "";
+    border: 1px solid #fff;
+    border-left: 0;
+    border-top: 0;
+    height: 9px;
+    left: 8px;
+    position: absolute;
+    top: 4px;
+    transform: rotate(45deg) scaleY(1.2);
+    -webkit-transform: rotate(45deg) scaleY(1.2);
+    -ms-transform:rotate(45deg) scaleY(1.2);    /* IE 9 */
+    -moz-transform:rotate(45deg) scaleY(1.2);   /* Firefox */
+    -o-transform:rotate(45deg) scaleY(1.2);     /* Opera */
+    width: 4px;
+    transform-origin: center;
+}
+.brandList-ul li {
+	float: left;
+	width: 25%;
+    padding: 15px 5px 5px;
+    text-align: center;
+    border-bottom: 1px solid #efeff4;
+    border-right: 1px solid #efeff4;
+    position: relative;
+}
+.brandList-ul li:nth-of-type(1),
+.brandList-ul li:nth-of-type(2),
+.brandList-ul li:nth-of-type(3),
+.brandList-ul li:nth-of-type(4){
+	border-top: 1px solid #efeff4;
+}
+.brandList-ul li .circle{
+	top: 5px;
+	left: 5px;
+	margin-top: 0;
+}
+.brandList-ul img{
+	width: 50px;
+	height: 40px;
+}
+.brandList-ul li p {
+    font-size: 12px;
+    padding: 5px 0px;
+}
+.boxLists{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.boxLists .divFont{
+    width: 38%;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    margin: 0 auto;
+    z-index: 1000;
+    margin-top: 67%;
+    text-align: center;
+    padding: 20px 10px;
+}
+.boxLists .divFont img{
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+}
+.boxLists .divFont p{
+    color: #fff;
+    font-size: .42rem;
+    margin-top: 10px;
+}
+</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="header">
+			   <ul class="am-u-sm-12 clearfix">
+				   <li class="am-u-sm-3 header_left" @click="returnNet"> <img src="./img/jt.png" alt=""> </li>
+				   <li class="am-u-sm-6 header_center">常用品牌</li>
+				   <li class="am-u-sm-3 header_right" @click="saveHandle">保存</li>
+			   </ul>
+			</div>
+			<div class="serachFrame fixed">
+	           <ul class="searchBox">
+	               <li><input class="searchInput" v-model="keyword" type="text" placeholder="请输入品牌名"/></li>
+	           </ul>
+	       </div>
+			<div class="currentCityFrame fixed">
+				<ul class="currentCity-title">
+				   <li>当前已选择品牌</li>
+				</ul>
+			</div>
+			<div class="currentCity-select fixed">
+				<ul class="brandList-ul am-cf" v-show="cacheData.length>0">
+					<li v-for="(item, index) in cacheData" :class="{active:item.isCheck}" @click="selectcacheBrandHandle(item)">
+						<span class="circle"></span>
+						<img :src="['https://www.wanguoqiche.com/files/logo/'+item.icoName+'.jpg']">
+						<p>{{item.brandName}}</p>
+					</li>
+				</ul>
+			</div>
+			<div class="picker-main">
+				<div class="navbar">
+			  		<a href="javascript:;" v-for="(item, key) in navLetter">{{item}}</a>
+			  	</div>
+			  	<div class="picker-conts">
+			  		<dl v-for="(val,key) in brandList">
+			  			<dt :id="key">{{key}}</dt>
+			  			<dd v-for="(v, k) in val" @click="selectcacheBrandHandle(v)" :class="{active:v.isCheck}" class="dd_select">
+			  				<a href="javascript:;">
+			  					<span class="circle"></span>
+			  					<img :src="['https://www.wanguoqiche.com/files/logo/'+v.icoName+'.jpg']">
+			  					<span>{{v.brandName}}</span>
+			  				</a>
+			  			</dd>
+			  		</dl>
+			  	</div>
+				<span class="prompt" style="display: none;"></span>
+			</div>
+
+			<!-- 弹窗提示 -->
+			<div class="prop" style="display: none;">
+				<div class="boxLists" v-show="isShowTip">
+		            <div class="divFont">
+		                <img src="./img/tip.png" alt=""/>
+		                <p>只能选择8个品牌</p>
+		            </div>
+		        </div>
+			</div>
+		</div>
+	<script src="js/jquery.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/jnsApi.js"></script>
+	<script src="js/common.js"></script>
+		<!--头部-->
+		<script>
+			$(function(){
+				var vue=new Vue({
+					el:'#app',
+					data:{
+						navLetter: [],//字母
+						brandList: [],//车辆品牌
+						isActive: false,
+						keyword: '',//搜索关键字
+						renderSelectCarBrandData: [],//选中的常用品牌
+						cacheData: [],//选中的常用品牌缓存
+						requestData: [], //选中提交的常用品牌
+						setFixedHeight: null,//设置固定的部分,
+						isShowTip: false,//是否显示提示
+					},
+					watch:{
+	                    'keyword':function (val) {
+	                        var self = this;
+	                        var tempArr = [];
+	                        var cacheDataItems = JSON.parse(window.sessionStorage.getItem('carBrandList'));
+	                        if(val != '') {
+	                            $.each(cacheDataItems, function (i, v) {
+	                                if(v.brandName.indexOf(val) > -1) {
+	                                    tempArr.push(v);
+	                                }
+	                            });
+	                        } else {
+	                            tempArr = cacheDataItems;
+	                        }
+	                        self.splittingData(tempArr);
+	                    }
+	                },
+					created:  function () {
+						this.init();
+					},
+					methods:{
+                       returnNet:function(){ //返回
+						   window.location.href="./index.html";
+					   },
+					   init: function () { //初始化数据
+					   		var self = this;
+					   		var request = {
+	                            token: window.localStorage.getItem('token'),
+	                            city : window.localStorage.getItem('city')
+	                        }
+	                        _c.post('/QualityMerchant/Brand/getBrandList', request ,function (res) {
+								if(res.code == 20000) {
+									window.sessionStorage.setItem('carBrandList',JSON.stringify(res.data.list));
+									self.splittingData(res.data.list);
+								}
+								$('.picker-main,.prop').show();
+								$('.currentCity-select').show();
+							});
+					   },
+					   splittingData: function (data) {//处理数据
+					   		var self = this;
+					   		var tempLetter = [], tempList = {};
+							var tempnavLetter = [];
+							var filterCache = []; //过滤数据的品牌brandId
+							this.cacheData = JSON.parse(window.localStorage.getItem('carBrandCache')) || [];
+							this.requestData = JSON.parse(window.localStorage.getItem('carBrandCache')) || [];
+
+							if(this.cacheData.length > 0) {
+								$.each(this.cacheData, function (i, v) {
+									filterCache.push(v.brandId);
+								});
+							} 
+							data && $.each(data, function (i, v) {
+								if(filterCache.indexOf(v.brandId) == -1) {
+									v.isCheck = false;
+									if(tempLetter.indexOf(v.initial) == -1) {
+										tempLetter.push(v.initial);
+										tempList[v.initial] = [];
+										tempnavLetter.push(v.initial);
+									}
+									tempList[v.initial].push(v);
+								}
+							});
+								
+							var tempListObj = {};
+							var str = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z";
+							self.navLetter = [];
+							str.split(',').forEach(function (v, i) {
+								if(tempnavLetter.indexOf(v) > -1) {
+									self.navLetter.push(v);
+									tempListObj[v] = tempList[v];
+								}
+							});
+							self.brandList = tempListObj;
+							this.$nextTick(function () {//更新dom后重新设置固定的部分
+	                            obj.setScrollHeight();
+	                        });
+					   },
+					   selectcacheBrandHandle: function (item) {//缓存品牌
+					   		var currentIndex = '';
+					   		var self = this;
+					   		$.each(this.requestData, function (i, v) {
+					   			if(v.brandId == item.brandId) {
+					   				currentIndex = (i + 1);
+					   				return false;
+					   			}
+					   		});
+
+					   		if(this.requestData.length == 8) {
+	                            if(currentIndex) {
+	                                item.isCheck = false;
+	                                this.requestData.splice((currentIndex - 1), 1);
+	                            } else {
+	                                item.isCheck = false;
+	                                this.isShowTip = true;
+	                                setTimeout(function () {
+	                                    self.isShowTip = false;
+	                                }, 800);
+	                            }
+	                        } else {
+	                            item.isCheck = !item.isCheck;
+	                            if(item.isCheck) {
+	                                this.requestData.push(item);
+	                            } else {
+	                            	if(currentIndex) {
+	                            		this.requestData.splice((currentIndex - 1), 1);
+	                            	}
+	                            }
+	                        }
+					   },
+					   saveHandle: function () {
+					   		var self = this;
+					   		var tempBrandIdArr = [];
+					   		$.each(this.requestData, function (i, v) {
+					   			tempBrandIdArr.push(v.brandId);
+					   		});
+					   		var request = {
+	                            token: window.localStorage.getItem('token'),
+	                            brand_id: tempBrandIdArr
+	                        }
+	                        if(tempBrandIdArr.length == 0) {
+	                        	_c.showLayer('请选择常用品牌');
+	                        	return false;
+	                        }
+	                        _c.post('/QualityMerchant/Brand/setCustomaryBrand', request, function (res) {
+	                            if(res.code==20000){
+	                                window.location.href='./index.html';
+	                            } else {
+	                                _c.showLayer(res.msg);
+	                            }
+	                       }, false);
+					   }
+					}
+				});
+				var obj={
+					init:function(){
+						this.bind();
+					},
+					bind:function(){
+						$('.navbar').on('touchstart', function () {
+							$(this).addClass('active');
+						});
+						$('.navbar').on('touchend', function () {
+							$(this).removeClass('active');
+							$('.prompt').html('').hide();
+						});
+						$('.navbar').on('touchmove', function (e) {
+				            var touch = e.originalEvent.touches[0];
+				            var pos = {"x": touch.pageX, "y": touch.pageY};
+				            var x = pos.x, y = pos.y;
+				            var width = $(this).find("a").width();
+        					var height = $(this).find("a").height();
+				            $(this).find("a").each(function (i, item) {
+				                var offset = $(item).offset();
+				                var left = offset.left, top = offset.top;
+				                if (x > left && x < (left + width) && y > top && y < (top + height)) {
+				                    var letterId = $(this).html();
+									obj.scrollHandle(letterId);
+				                }
+				            });
+				            e.preventDefault();
+						});
+						$('.navbar').on('touchstart', 'a', function () {
+							var letterId = $(this).html();
+							obj.scrollHandle(letterId);
+						});
+						$(window).on('resize',function(){
+		                    obj.setScrollHeight(); 
+		                });
+					},
+					setScrollHeight: function () {
+		                var $setCityListsHeight = $('.header').outerHeight() + $('.serachFrame').outerHeight() + $('.currentCityFrame').outerHeight() + $('.currentCity-select').outerHeight() - 1;
+		                $('.picker-main').css('padding-top', $setCityListsHeight);
+		                vue.setFixedHeight = $setCityListsHeight;
+		            },
+					scrollHandle: function (letterId) {
+						var top = $("#"+letterId).parent().offset().top;
+						$(window).scrollTop(top - vue.setFixedHeight);
+						$('.prompt').html(letterId).show();
+					},
+				};
+				obj.init();
+			})
+		</script>
+	</body>
+</html>

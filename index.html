@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<meta charset="utf-8">
+		<title>优供商城</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="MobileOptimized" content="320">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="x5-orientation" content="portrait">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="browsermode" content="application">
+		<meta name="x5-page-mode" content="app">
+		<meta name="msapplication-tap-highlight" content="no">
+		<link rel="stylesheet" href="./css/amazeui.min.css"/>
+		<link class="css_style" rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/index.css"/>
+		<style>
+			.seeMore{
+				color: #46aef7;
+				line-height: 1rem;
+    			border-top: 1px solid #efeff4;
+			}
+		</style>
+	</head>
+	<body>
+	  	<div id="app" class="am-g" style="display: none">
+		    <div class="header">
+			   <ul class="am-u-sm-12 am-cf">
+				   <li class="am-u-sm-3 header_left"><img src="./img/jt.png" alt=""/></li>
+				   <li class="am-u-sm-6 header_center">优供商城</li>
+				   <li class="am-u-sm-3 header_right" @click="variousTypes('collection','收藏列表')">收藏列表</li>
+			   </ul>
+			</div>
+            <div class="logo am-u-sm-12">
+                <ul class="am-u-sm-12 am-cf">
+					<li @click="linkOpneWebNet"><img src="./img/logo.png" alt=""/></li>
+					<li class="am-u-sm-12 inputSearch"><img class="searchMrrio" src="./img/morri.png" alt=""/><input type="text" readonly="readonly" placeholder="请输入配件名称或品牌" @click="searchRouter"/></li>
+				</ul>
+			</div>
+		    <div class="am-u-sm-12 partsLibrarys">
+				<!-- 城市-->
+				<div class="am-u-sm-12 brandArea">
+					<ul class="am-u-sm-12 am-cf cityParent">
+						<li class="am-u-sm-6"><img style="width: 0.45rem;" class="brandImg" src="./img/position.png" alt=""/>常用城市</li>
+						<li class="am-u-sm-6 titleCity" @click="cityHref">选择</li>
+						<div id="container" style="display: none;"></div>
+					</ul>
+				</div>
+				<div class="am-u-sm-12 am-cf cityArea" v-show="renderSelectCityData.length>0">
+					<span v-for="(item,index) in renderSelectCityData">{{item}}</span>
+				</div>
+				<!-- 品牌专区-->
+                <div class="am-u-sm-12 brandArea">
+				   <ul class="am-u-sm-12 am-cf">
+					   <li class="am-u-sm-6"><img class="brandImg" src="./img/brandR.png" alt=""/>常用品牌</li>
+					   <li class="am-u-sm-6" @click="stillMore">修改</li>
+				   </ul>
+			    </div>
+				<div class="am-u-sm-12 brandContent">
+					 <ul class="am-u-sm-12 am-cf">
+						 <li v-for="(item,index) in datas.brandList" class="am-u-sm-3" @click="variousTypes('serchList', item.brandName)" :key="index">
+							 <img :src="['https://www.wanguoqiche.com/files/logo/'+item.icoName+'.jpg']">
+							 <p>{{item.brandName}}</p>
+						 </li>
+					 </ul>
+					 <div class="am-u-sm-12 am-text-center seeMore" v-show="datas.brandList.length > 0" @click="seeMore()">查看更多</div>
+				</div>
+				<!-- 推荐商户-->
+				<div class="am-u-sm-12 brandArea">
+					<ul class="am-u-sm-12">
+						<li class="am-u-sm-6"><img class="brandImg" src="./img/recom.png" alt=""/>推荐商户</li>
+					</ul>
+				</div>
+				<div class="am-u-sm-12 commonShop">
+					<ul class="am-u-sm-12 am-cf" v-show="renderImg.length > 0">
+						<li v-for="(item,index) in renderImg" @click="advImghadle(item)">
+							<a href="javascript:;">
+								<img :src="item.advImg">
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="am-u-sm-12 bottomBox" style="display: none">
+					<p>商务合作 : 020-26290697</p>
+				</div>
+			</div>
+	  	</div>
+		<script src="js/flexible.js"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/jnsApi.js"></script>
+		<script src="js/common.js"></script>
+		<script src="//webapi.amap.com/maps?v=1.4.6&key=f65184f029e86e47b9fdbcbbe41c24c5"></script>
+		<!--头部-->
+		<script>
+			$(function(){
+				var vue=new Vue({
+					el:'#app',
+					data:{
+						datas:{
+							"brandList":[],
+						},
+						cityName:'',
+						renderSelectCityData: [],//已选中的常用城市
+						renderImg: [],
+					},
+					methods:{
+					   searchRouter:function(){
+                            window.location.href="./search.html";
+					   },
+					   linkOpneWebNet:function(){
+							window.location.href="./openWeb.html";
+					   },
+					   stillMore:function(){
+						    window.location.href="./carBrandList.html";
+					   },
+					   variousTypes:function(type, brandName){
+					   		window.sessionStorage.setItem('cacheBrandName', brandName);//设置品牌名称缓存
+						    window.location.href="./listOfAccessories.html?listType="+type;
+					   },
+					   cityHref:function(){
+						   var exitSelectVal=_c.getQueryString('citySelect');
+						   var this_val=exitSelectVal?encodeURI(exitSelectVal):encodeURI(encodeURI(this.cityName));
+						       window.location.href='./searchCity.html';
+					   },
+					   requestInit:function(data){
+						   	this.datas.brandList = data.brandList;//常用品牌
+						   	this.renderImg = data.recommendQuality;//推荐商户
+						   	$.each(data.brandList,function(index,items){ //常用品牌
+							   items.isCheck= true;
+						   	});
+						   	window.localStorage.setItem('carBrandCache',JSON.stringify(data.brandList));//常用品牌缓存
+						   	window.localStorage.setItem('consultation',JSON.stringify(data.consultation));//咨询电话
+						   
+						   	if(data.cityList.length > 0) { //常用城市
+						   		this.renderSelectCityData = data.cityList;
+							   	window.sessionStorage.setItem('cityCache', JSON.stringify(data.cityList));
+						   	} else {
+						   		window.sessionStorage.setItem('cityCache', JSON.stringify([window.localStorage.getItem('city')]));
+						   		this.renderSelectCityData = [window.localStorage.getItem('city')];
+						   	}
+					   },
+					   advImghadle: function (item) {
+					   		window.sessionStorage.setItem('cacheName', item.name);//设置商户名称
+					   		window.location.href = './showDetails.html?goBack=1&merchant_id=' + item.id;
+					   },
+					   initData: function () {
+					   		var this_=this;
+							var obj={};
+							    obj.token=_c.getQueryString('token')?_c.getQueryString('token'): window.localStorage.getItem('token');
+							var status=_c.getQueryString('status')?_c.getQueryString('status'):window.localStorage.getItem('status');
+								window.localStorage.setItem('status',status);
+								window.localStorage.setItem('token',obj.token);
+							obj.city = window.localStorage.getItem('city');
+							_c.post('/QualityMerchant/Merchant/index',obj,function(res){  //token验证获取数据
+								if(res.code==20000){
+								   this_.requestInit(res.data);
+								} else if (res.code == 40000) {
+									//this_.initData();
+								}
+							});
+					   },
+					   seeMore: function(){
+						   window.location.href = "./more.html?listType=more";
+					   }
+					},
+					created:function(){
+						// this.initData();
+					}
+				});
+				var obj={
+					init:function(){
+						obj.mapCity();
+						obj.bind();
+						$('#app').show();
+					},
+					bind:function(){   //顶部返回按钮
+                         $('.header_left').click(function(){
+							  var status=window.localStorage.getItem('status');
+                               _c.goBackClick(status);
+						 });
+					},
+					mapCity:function(){
+						var map = new AMap.Map('container', {  //高德
+							resizeEnable: false
+						});
+						map.getCity(function(data) {//定位获取城市
+							if (data['province'] && typeof data['province'] === 'string') {
+								window.localStorage.setItem('city', data.city);
+							}else{
+								window.localStorage.setItem('city', '广州');
+							}
+							vue.initData();
+						});
+					},
+				};
+				obj.init();
+			})
+		</script>
+	</body>
+</html>

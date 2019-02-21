@@ -1,0 +1,346 @@
+[v-cloak] {
+    display: none;
+}
+
+.am-u-sm-12{
+    padding: 0;
+}
+#app{
+    padding-top: 40px;
+}
+
+/* 顶部 */
+.header {
+    height: 40px;
+    background: #46aef7;
+    font-size: .45rem;
+    color: #fff;
+    border-bottom: 1px solid #46aef7;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header ul, .header ul li {
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+}
+
+.header_center {
+    text-align: center;
+    float: left !important;
+}
+
+.header_right {
+    font-size: .42rem;
+    text-align: right;
+    padding-right: 10px !important;
+    cursor: pointer;
+}
+
+.header_left {
+    font-size: .6rem;
+    padding-left: 10px !important;
+    cursor: pointer;
+    position: relative;
+}
+.header_left img{
+    position: absolute;
+    top: 26%;
+    left: 9px;
+    width: 10px;
+    height: 18px;
+}
+
+
+/* Tab */
+.buttons-tab {
+    display: flex;
+    justify-content: space-around;
+    background: #ffffff;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .4rem;
+}
+.tab-link.active{
+    color: #46aef7;
+    border-bottom: 2px solid #46aef7;
+}
+/* 搜索框 */
+.search-wrap{
+    position: relative;
+    height: 50px;
+}
+.inputSearch {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 100%;
+}
+
+.searchMrrio {
+    position: absolute;
+    top: 7px;
+    left: 34%;
+    width: 18px!important;
+    height: 18px;
+}
+.inputSearch input {
+    width: 95%;
+    display: block;
+    margin: 0 auto;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px;
+    text-align: center;
+    font-size: .36rem;
+    cursor: pointer;
+}
+
+/**/
+.banners-wrap{
+    background: #ffffff;
+}
+
+ul>li.quarter{
+    text-align: center;
+    padding: 10px 0;
+    border-right: 1px solid rgb(235,235,235);
+    border-bottom: 1px solid rgb(235,235,235);
+}
+.quarter img{
+    margin: 10px 0 5px 0;
+}
+/* ul>li.quarter:nth-child(4){
+    border-right: 0;
+} */
+.banner-name{
+    margin: 5px 0 10px 0;
+}
+.quarter img{
+    width: 1.5rem;
+    height: 1.2rem;
+}
+
+/* 部件油品 */
+.am-u-sm-12, .am-u-sm-4, .am-u-sm-8, .am-u-sm-3, .am-u-sm-6, .am-u-sm-9 {
+    padding: 0;
+}
+ul.accessoriesBox {
+    padding: 0 8px 8px 8px;
+}
+.accessoriesKids {
+    background: #fff;
+    border: 1px solid #f1f1f9;
+    border-radius: 15px;
+    font-size: .4rem;
+    padding: 10px 0;
+    -moz-box-shadow: 0px 1px 10px #5959594a;
+    -webkit-box-shadow: 0px 1px 10px #5959594a;
+    box-shadow: 0px 1px 10px #5959594a;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.accessoriesBox li.accessoriesKids:first-child{
+    margin-top: 0;
+}
+.accessoriesKids .numDaetails .viewNum:nth-of-type(2) {
+    width: 41.66666667%;
+}
+.item-hd {
+    padding: 0 10px 10px;
+}
+.adjustments {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0!important;
+}
+
+.icoName img {
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid rgb(229, 229, 229);
+    border-radius: 5px;
+}
+.showName {
+    font-size: .4rem;
+    font-weight: bold;
+}
+.numDaetails {
+    margin-top: 0.2rem;
+    font-weight: normal;
+    font-size: 0.33rem;
+}
+.accessoriesKids .numDaetails .viewNum {
+    text-align: center;
+    float: left;
+}
+.numDaetails .icon {
+    width: 18px;
+}
+.numDaetails p:nth-of-type(2) {
+    margin-top: 0.1rem;
+}
+.collectionIconIng {
+    color: #c2c2c2;
+    font-size: 18px;
+}
+.numDaetails p:nth-of-type(2) {
+    margin-top: 0.1rem;
+}
+.item-bd {
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.userName {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.userInfoDiv {
+    padding: 0 4px 0 30px;
+    margin-bottom: 7px;
+    font-size: 0.33rem;
+    position: relative;
+}
+.item-bd img {
+    position: absolute;
+    left: 6px;
+    top: 1px;
+    width: 18px;
+}
+.collection_close {
+    display: none;
+    right: -12px;
+}
+.callPhone {
+    color: #46aef7;
+}
+.item-ft {
+    margin-top: 10px;
+}
+.scope-img {
+    position: relative;
+    font-size: 0.33rem;
+    text-align: center;
+    color: #898989;
+}
+.scope-img img {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    margin: 0 auto;
+}
+.scope-info {
+    padding-left: 15px;
+}
+.scope-logo.one {
+    text-align: left;
+}
+.scope-logo {
+    text-align: center;
+}
+.scope-logo img {
+    width: 25px;
+    margin: 0 5px 5px 0;
+}
+.scope-name {
+    font-size: 0.33rem;
+}
+.numDaetails .active, .numDaetails .active .collectionIconIng {
+    color: #ffcc40;
+}
+/* 提示框 */
+.boxLists {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.boxLists .divFont {
+    width: 26%;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    margin: 0 auto;
+    z-index: 1000;
+    margin-top: 67%;
+    text-align: center;
+    padding: 10px;
+}
+.boxLists .divFont img {
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+}
+.boxLists .divFont p {
+    color: #fff;
+    font-size: .42rem;
+    margin-top: 10px;
+}
+
+/* 搜索框 */
+.brandContents .am-u-sm-12, .brandContents .am-u-sm-10, .brandContents .am-u-sm-2 {
+    padding: 0;
+}
+.brandContents {
+    width: 100%;
+}
+.brandContents ul li {
+    padding: 8px 10px;
+    line-height: 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding-left: 10px;
+    font-size: .4rem;
+    position: relative;
+}
+.brandContents ul li div {
+    float: left;
+}
+.brandContents ul li div {
+    float: left;
+}
+.brandLiClose {
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+.closeItem {
+    padding: 8px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: url(../img/delete.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+
+/* 没有结果 */
+.temporary {
+    text-align: center;
+}
+.temporary li {
+    padding: 30px 12px;
+    font-size: .4rem;
+    color: red;
+}
+.noDataImg {
+    display: block;
+    width: 84px;
+    margin: 0 auto;
+}
+.errorTip {
+    margin: 10px 0;
+    color: #bfbfc1;
+}
+
+.checkMore {
+    padding: 10px;
+    text-align: center;
+    color: #67baf6;
+}

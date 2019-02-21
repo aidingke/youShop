@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="./css/amazeui.min.css"/>
+    <link class="css_style" rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/searchCity.css"/>
+    <script src="js/flexible.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+<script src="js/jquery.js"></script>
+<script src="js/config.js"></script>
+<script src="js/jnsApi.js"></script>
+<script src="js/common.js"></script>
+<body>
+   <div class="am-g searchCity" id="searchCity">
+       <div class="am-u-sm-12 header">
+           <ul class="am-u-sm-12 clearfix">
+               <li class="am-u-sm-3 header_left" @click="returnNet"> <img src="./img/jt.png" alt=""> </li>
+               <li class="am-u-sm-6 header_center">选择城市</li>
+               <li class="am-u-sm-3 header_right" @click="saveHandle">保存</li>
+           </ul>
+       </div>
+       <div class="am-u-sm-12 serachFrame fixed">
+           <ul class="am-u-sm-12 searchBox">
+               <li class="am-u-sm-12"><input class="searchInput" v-model="keyword" type="text" placeholder="请输入城市名"/></li>
+           </ul>
+       </div>
+       <div class="am-u-sm-12 currentCityFrame fixed">
+           <ul class="am-u-sm-12 currentCity-title">
+               <li class="am-u-sm-12">当前已选择常用城市</li>
+           </ul>
+       </div>
+       <div class="am-u-sm-12 currentCity-select fixed" v-show="renderSelectCityData.length>0">
+           <a v-for="(item,index) in renderSelectCityData" href="javascript:;" @click="delMothed(item)">{{item}} <span>×</span></a>
+       </div>
+       <div class="am-u-sm-12 cityLists">
+            <div class="am-u-sm-12 contentCity" v-for="arr in letters">
+                <div class="am-u-sm-12 contentCityTitle" :id="arr">{{arr}}</div>
+                <div class="am-u-sm-12 contentCityList">
+                    <ul class="am-u-sm-12">
+                        <li class="am-u-sm-12 cityItem" v-for="(item,index) in dataItems" :class="{active:item.isCheck}" v-if="arr===item.initial" @click="selectedMothed(item)"><span class="circle"></span>{{item.regionName}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="noDataTip">暂无相关数据</div>
+       </div>
+       <div class="letter">
+           <ul>
+               <li v-for="(item,index) in letters"><a href="javascript:void(0);" :data-index="index">{{item}}</a></li>
+           </ul>
+       </div>
+       <span class="tips"></span>
+       <!-- 弹窗提示 -->
+        <div class="boxLists" v-show="isShowTip">
+            <div class="divFont">
+                <img src="./img/tip.png" alt=""/>
+                <p>只允许选择5个</p>
+            </div>
+        </div>
+   </div>
+<script>
+    $(function(){
+        var vue=new Vue({
+                el:'#searchCity',
+                data:{
+                   letters:[],
+                   dataItems:[],//渲染数据
+                   setFixedHeight: null,//设置固定的部分,
+                   renderSelectCityData: [],//已选中的常用城市
+                   isShowTip: false,//是否显示提示
+                   keyword: '',//搜索关键字
+                },
+                watch:{
+                    'keyword':function (val) {
+                        var self = this;
+                        var tempArr = [];
+                        var cacheDataItems = JSON.parse(window.sessionStorage.getItem('cityArrs'));
+                        if(val != '') {
+                            $.each(cacheDataItems, function (i, v) {
+                                if(v.regionName.indexOf(val) > -1) {
+                                    tempArr.push(v);
+                                }
+                            });
+                        } else {
+                            tempArr = cacheDataItems;
+                        }
+                        this.initRender(tempArr);
+                    }
+                },
+                methods:{
+                   returnNet:function(){
+                       window.location.href="index.html";
+                   },
+                   selectedMothed:function(item){ //选中城市
+                        var self = this;
+                        var currentCityName = item.regionName;
+                        var currentIndex = this.renderSelectCityData.indexOf(currentCityName);
+                        if(this.renderSelectCityData.length == 5) {
+                            if(currentIndex > -1) {
+                                item.isCheck = false;
+                                this.renderSelectCityData.splice(currentIndex, 1);
+                            } else {
+                                item.isCheck = false;
+                                this.isShowTip = true;
+                                setTimeout(function () {
+                                    self.isShowTip = false;
+                                }, 800);
+                            }
+                        } else {
+                            item.isCheck = !item.isCheck;
+                            if(item.isCheck) {
+                                this.renderSelectCityData.push(currentCityName);
+                            } else {
+                                this.renderSelectCityData.splice(currentIndex, 1);
+                            }
+                        }
+                            
+                        this.$nextTick(function () {//更新dom后重新设置固定的部分
+                            obj.setScrollHeight();
+                        });
+                   },
+                   delMothed: function (city) {//删除选项
+                        var index = this.renderSelectCityData.indexOf(city);
+                        this.dataItems.map(function (v,i) {
+                            if(v.regionName == city) {
+                                v.isCheck = false;
+                                return false;
+                            }
+                        });
+                        this.renderSelectCityData.splice(index, 1);
+                        this.$nextTick(function () {//更新dom后重新设置固定的部分
+                            obj.setScrollHeight();
+                        });
+                   },
+                    initRender:function(datas){ //初始化页面
+                        var this_ = this;
+                        var beLetters = [];
+                        this_.letters = [];
+                        if(datas.length>0){
+                            $('.noDataTip').hide();
+                            $.each(datas,function(index,items){
+                                if(this_.renderSelectCityData.indexOf(items.regionName) > -1) {
+                                    items.isCheck = true;
+                                } else {
+                                    items.isCheck = false;
+                                }
+                                if(beLetters.indexOf(items.initial)==-1){
+                                   beLetters.push(items.initial);
+                                }
+                            });
+                            this_.dataItems = datas;
+                            this_.letters = beLetters.sort();
+                        }else{
+                            $('.noDataTip').show();
+                        }
+                    },
+                    saveHandle: function () {//保存
+                        var request = {
+                            token: window.localStorage.getItem('token'),
+                            city: this.renderSelectCityData
+                        }
+                        if(this.renderSelectCityData.length == 0) {
+                            _c.showLayer('请选择常用城市');
+                            return false;
+                        }
+                        _c.post('/QualityMerchant/City/setCustomaryCity', request, function (res) {
+                            if(res.code==20000){
+                                // window.sessionStorage.setItem('cityCache',JSON.stringify(request.city))
+                                window.location.href='./index.html';
+                            } else {
+                                _c.showLayer(res.msg);
+                            }
+                       }, false);
+                    }
+               },
+               created:function(){
+                    var this_ = this;
+                    var cityArrsExit = JSON.parse(window.sessionStorage.getItem('cityArrs'));
+                    this.renderSelectCityData = JSON.parse(window.sessionStorage.getItem('cityCache')) || [];
+                    var request = {
+                        token: window.localStorage.getItem('token')
+                    }
+                   _c.post('/QualityMerchant/City/getCityList', request, function (res) {
+                       if(res.code == 20000){
+                           this_.initRender(res.data.list);
+                           window.sessionStorage.setItem('cityArrs',JSON.stringify(res.data.list));
+                           $('.letter').show();
+                           $('.cityLists').show();
+                       }
+                   }, false);
+               }
+        });
+        var obj={
+            init:function(){
+                this.bind();
+                $('.searchCity').show();
+                obj.setScrollHeight();
+            },
+            bind:function() {
+                $('.letter').on('touchstart', 'a', function(){
+                    var letterId = $(this).html();
+                    var index= $(this).attr('data-index');
+                    obj.scrollHandle(letterId,index);
+                });
+                $('.letter').on('touchmove', function (e) {
+                    var touch = e.originalEvent.touches[0];
+                    var pos = {"x": touch.pageX, "y": touch.pageY};
+                    var x = pos.x, y = pos.y;
+                    var width = $(this).find("a").width();
+                    var height = $(this).find("a").height();
+                    $(this).find("a").each(function (i, item) {
+                        var offset = $(item).offset();
+                        var left = offset.left, top = offset.top;
+                        if (x > left && x < (left + width) && y > top && y < (top + height)) {
+                            var id = $(this).html();
+                            var index= $(this).attr('data-index');
+                            obj.scrollHandle(id,index);
+                        }
+                    });
+                    e.preventDefault();
+                });
+                $('.letter').on('touchend', function () {
+                    $(this).removeClass('active');
+                    $('.tips').hide().html('');
+                });
+                $(window).on('resize',function(){
+                    obj.setScrollHeight(); 
+                });
+            },
+            setScrollHeight: function () {
+                var $setCityListsHeight = $('.header').outerHeight() + $('.serachFrame').outerHeight() + $('.currentCityFrame').outerHeight() + $('.currentCity-select').outerHeight();
+                $('.cityLists').css('padding-top',$setCityListsHeight);
+                vue.setFixedHeight = $setCityListsHeight;
+            },
+            scrollHandle: function (id,index) {
+                var top=index==='0'?$("#"+id).parent().offset().top-(40+93):$("#"+id).parent().offset().top;
+                $(window).scrollTop(top - vue.setFixedHeight);
+                $('.tips').show().html(id);
+            },
+        };
+        obj.init();
+    });
+</script>
+</body>
+</html>

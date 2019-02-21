@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>优供商城</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="./css/amazeui.min.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./font/iconfont.css" />
+    <link rel="stylesheet" href="./css/more.css" />
+    <style type="text/css">
+/*新增*/
+.viewNum .com_r{text-align: var(--fr);}
+.accessoriesKids .numDaetails .viewNum_atd{
+    padding-left: 0;
+    text-align: var(--fl);
+}
+.com_col{
+    color: var(--c-col);
+}
+.scope-info-more{
+    float: var(--fr);color: var(--c-col);
+}
+.item-bd{
+    padding-left: 28px;
+}
+    </style>
+</head>
+
+<body>
+    <div id="app" class="am-g" v-cloak> 
+        <div class="header">
+            <ul class="am-u-sm-12 am-cf">
+                <li class="am-u-sm-3 header_left" @click="returnLink">
+                    <img src="./img/jt.png" alt="" />
+                </li>
+                <li class="am-u-sm-6 header_center">查看更多</li>
+            </ul>
+        </div>
+        <div class="buttons-tab">
+            <span class="tab-link" :class="{'active': showIndex==index}" v-for="(item,index) in items" @click="tab_switch(index)">{{item}}</span>
+        </div>
+        <div class="search-wrap">
+            <div class="am-u-sm-12 inputSearch">
+                <img class="searchMrrio" src="./img/morri.png" :style="{'left':pleft}" v-show="searchValue==''" />
+                <input type="text" v-model.trim="searchValue" :placeholder="placeholder_txt" />
+            </div>
+        </div>
+
+        <!-- 车系品牌 -->
+        <div class="banners-wrap" v-show="showBanners">
+            <ul class="am-avg-sm-4" v-for="(item, indexs) in country_banners" v-show="item.type == showIndex">
+                <li class="quarter" v-for="(i,index) in country_banners[indexs].banners" @click="variousTypes('more',i.brandName)" v-show="!isSearchBanner || i.brandName.toLowerCase().indexOf(searchValue.toLowerCase()) > -1">
+                    <img :src="'https://www.wanguoqiche.com/files/logo/'+i.icoName+'.jpg'">
+                    <div class="banner-name">{{i.brandName}}</div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- 品牌详情 -->
+        <div v-show="showBannerDetails">
+            <ul class="accessoriesBox am-u-sm-12">
+                <li class="accessoriesKids am-u-sm-12" v-for="(item, index) in bannerDetails">
+                    <div class="item-hd adjustments am-u-sm-12">
+                        <div class="icoName am-u-sm-3">
+                            <img :src="item.cover_url" alt="" v-if="item.cover_url">
+                            <img src="./img/noLogo.png" v-else>
+                        </div>
+                        <div class="item-right am-u-sm-9">
+                            <div class="showName am-u-sm-12">
+                                {{item.name}}
+                                <span class="collection_close" style="float: right;">
+                                    <img src="./img/delete.png" alt="" style="width: 70%;">
+                                </span>
+                            </div>
+                            <div class="am-u-sm-12 numDaetails">
+                                <div class="am-u-sm-7 viewNum">
+                                    <!-- <p>
+                                        <img class="icon" src="./img/viewNum.png" alt="">
+                                    </p> -->
+                                    <p class="viewNum_atd viewNum"><span>浏览：</span>{{item.spv_num}}</p>
+                                </div>
+                                <!-- <div class="am-u-sm-5 viewNum noPadding" @click="handleDetails(item)" v-if="item.detail_link || item.detail_photo_list.length > 0">
+                                    <p>
+                                        <img class="icon" src="./img/details.png" alt="">
+                                    </p>
+                                    <p>详情</p>
+                                </div> -->
+                                <div class="am-u-sm-4 active viewNum" @click="collectionMethod(item)" v-if="item.collect_status == 1">
+                                    <!-- <p style="line-height: 18px;">
+                                        <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                    </p> -->
+                                    <p class="com_r" style="margin-top: 0.07rem;">取消收藏</p>
+                                </div>
+                                <div class="am-u-sm-4 viewNum" @click="collectionMethod(item)" v-else>
+                                    <!-- <p style="line-height: 18px;">
+                                        <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                    </p> -->
+                                    <p class="com_r com_col" style="margin-top: 0.07rem;">收藏店铺</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-bd am-u-sm-12">
+                        <!-- <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.tel" @click="callP(item.tel,'seat',item.id)">
+                            <img src="./img/telNum.png" alt=""> {{item.tel}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.contact_tel" @click="callP(item.contact_tel,'mobile',item.id)">
+                            <img src="./img/tel.png" alt=""> {{item.contact_tel}}
+                        </div> -->
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.wechat">
+                            <img src="./img/weixin.png" alt=""> {{item.wechat}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.qq">
+                            <img src="./img/qq.png" alt=""> {{item.qq}}
+                        </div>
+                        <div class="am-u-sm-12 userInfoDiv addres">
+                            <img src="./img/addres.png" alt="">
+                            <span>{{item.province}}{{item.city}}{{item.address}}</span>
+                        </div>
+                    </div>
+                    <div class="item-ft am-u-sm-12" @click="handleDetails(item)" >
+                        <div class="scope-img am-u-sm-3">
+                            <img src="./img/scope.png" alt="">
+                            <p>经营范围</p>
+                        </div>
+                        <div class="scope-info am-u-sm-9 userInfoDiv">
+                            <div class="scope-logo" :class="{one: item.brand_list && item.brand_list.length > 0}">
+                                <img v-if="v.ico_name!='others_ico'" v-for="(v,k) in item.brand_list" :src="['https://www.wanguoqiche.com/files/logo/'+v.ico_name+'.jpg']">
+                            </div>
+                            <div class="scope-name">
+                                {{item.main_business}}
+                            </div>
+                        </div>
+                        <div class="item-hd am-u-sm-12" v-if="item.detail_link || item.detail_photo_list.length > 0" ><span class="scope-info-more">更多内容</span></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 部件油品 -->
+        <div class="parts-oil" v-show="showParts">
+            <!-- 拆车件 -->
+            <ul class="accessoriesBox am-u-sm-12" v-show="showIndex==3">
+                <li class="accessoriesKids am-u-sm-12" v-for="(item, index) in carParts.list">
+                    <div class="item-hd adjustments am-u-sm-12">
+                        <div class="icoName am-u-sm-3">
+                            <img :src="item.cover_url" alt="" v-if="item.cover_url">
+                            <img src="./img/noLogo.png" v-else>
+                        </div>
+                        <div class="item-right am-u-sm-9">
+                            <div class="showName am-u-sm-12">
+                                {{item.name}}
+                                <span class="collection_close" style="float: right;">
+                                    <img src="./img/delete.png" alt="" style="width: 70%;">
+                                </span>
+                            </div>
+                            <div class="am-u-sm-12 numDaetails">
+                                <div class="am-u-sm-7 viewNum viewNum_atd">
+                                   <!--  <p>
+                                       <img class="icon" src="./img/viewNum.png" alt="">
+                                   </p> -->
+                                    <p class="viewNum_atd"><span>浏览：</span>{{item.spv_num}}</p>
+                                </div>
+                                <!-- <div class="am-u-sm-5 viewNum noPadding" @click="handleDetails(item)" v-if="item.detail_link || item.detail_photo_list.length > 0">
+                                    <p>
+                                        <img class="icon" src="./img/details.png" alt="">
+                                    </p>
+                                    <p>详情</p>
+                                </div> -->
+                                <div class="am-u-sm-4 active viewNum" @click="collectionMethod(item)" v-if="item.collect_status == 1">
+                                    <p style="line-height: 18px;">
+                                        <!-- <i class="iconfont icon-favoritesfilling collectionIconIng"></i> -->
+                                    </p>
+                                    <p class="com_r" style="margin-top: 0.07rem;">取消收藏</p>
+                                </div>
+                                <div class="am-u-sm-4 viewNum" @click="collectionMethod(item)" v-else>
+                                    <!-- <p style="line-height: 18px;">
+                                        <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                    </p> -->
+                                    <p class="com_col com_r" style="margin-top: 0.07rem;">收藏店铺</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-bd am-u-sm-12">
+                        <!-- <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.tel" @click="callP(item.tel,'seat',item.id)">
+                            <img src="./img/telNum.png" alt=""> {{item.tel}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.contact_tel" @click="callP(item.contact_tel,'mobile',item.id)">
+                            <img src="./img/tel.png" alt=""> {{item.contact_tel}}
+                        </div> -->
+
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.wechat">
+                            <img src="./img/weixin.png" alt=""> {{item.wechat}}
+                        </div>
+
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.qq">
+                            <img src="./img/qq.png" alt=""> {{item.qq}}
+                        </div>
+                        <div class="am-u-sm-12 userInfoDiv addres">
+                            <img src="./img/addres.png" alt="">
+                            <span>{{item.province}}{{item.city}}{{item.address}}</span>
+                        </div>
+                    </div>
+                    <div class="item-ft am-u-sm-12" @click="handleDetails(item)">
+                        <div class="scope-img am-u-sm-3">
+                            <img src="./img/scope.png" alt="">
+                            <p>经营范围</p>
+                        </div>
+                        <div class="scope-info am-u-sm-9 userInfoDiv">
+                            <div class="scope-logo" :class="{one: item.brand_list && item.brand_list.length > 0}">
+                                <img v-if="v.ico_name!='others_ico'" v-for="(v,k) in item.brand_list" :src="['https://www.wanguoqiche.com/files/logo/'+v.ico_name+'.jpg']">
+                            </div>
+                            <div class="scope-name">
+                                {{item.main_business}}
+                            </div>
+                        </div>
+                        <div class="item-hd am-u-sm-12" v-if="item.detail_link || item.detail_photo_list.length > 0"><span class="scope-info-more">更多内容</span></div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 通用件 -->
+            <ul class="accessoriesBox am-u-sm-12" v-show="showIndex==4">
+                <li class="accessoriesKids am-u-sm-12" v-for="(item, index) in generalParts.list">
+                    <div class="item-hd adjustments am-u-sm-12">
+                        <div class="icoName am-u-sm-3">
+                            <img :src="item.cover_url" alt="" v-if="item.cover_url">
+                            <img src="./img/noLogo.png" v-else>
+                        </div>
+                        <div class="item-right am-u-sm-9">
+                            <div class="showName am-u-sm-12">
+                                {{item.name}}
+                                <span class="collection_close" style="float: right;">
+                                    <img src="./img/delete.png" alt="" style="width: 70%;">
+                                </span>
+                            </div>
+                            <div class="am-u-sm-12 numDaetails">
+                                <div class="am-u-sm-7 viewNum viewNum_atd">
+                                    <!-- <p>
+                                        <img class="icon" src="./img/viewNum.png" alt="">
+                                    </p> -->
+                                    <p class="viewNum_atd"><span>浏览：</span>{{item.spv_num}}</p>
+                                </div>
+                                <!-- <div class="am-u-sm-5 viewNum noPadding" @click="handleDetails(item)" v-if="item.detail_link || item.detail_photo_list.length > 0">
+                                    <p>
+                                        <img class="icon" src="./img/details.png" alt="">
+                                    </p>
+                                    <p>详情</p>
+                                </div> -->
+                                <div class="am-u-sm-4 active viewNum" @click="collectionMethod(item)" v-if="item.collect_status == 1">
+                                    <!-- <p style="line-height: 18px;">
+                                        <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                    </p> -->
+                                    <p class="com_r" style="margin-top: 0.07rem;">取消收藏</p>
+                                </div>
+                                <div class="am-u-sm-4 viewNum" @click="collectionMethod(item)" v-else>
+                                    <!-- <p style="line-height: 18px;">
+                                        <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                    </p> -->
+                                    <p class="com_col com_r" style="margin-top: 0.07rem;">收藏店铺</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-bd am-u-sm-12">
+                        <!-- <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.tel" @click="callP(item.tel,'seat',item.id)">
+                            <img src="./img/telNum.png" alt=""> {{item.tel}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.contact_tel" @click="callP(item.contact_tel,'mobile',item.id)">
+                            <img src="./img/tel.png" alt=""> {{item.contact_tel}}
+                        </div> -->
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.wechat">
+                            <img src="./img/weixin.png" alt=""> {{item.wechat}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.qq">
+                            <img src="./img/qq.png" alt=""> {{item.qq}}
+                        </div>
+                        <div class="am-u-sm-12 userInfoDiv addres">
+                            <img src="./img/addres.png" alt="">
+                            <span>{{item.province}}{{item.city}}{{item.address}}</span>
+                        </div>
+                    </div>
+                    <div class="item-ft am-u-sm-12" @click="handleDetails(item)" >
+                        <div class="scope-img am-u-sm-3">
+                            <img src="./img/scope.png" alt="">
+                            <p>经营范围</p>
+                        </div>
+                        <div class="scope-info am-u-sm-9 userInfoDiv">
+                            <div class="scope-logo" :class="{one: item.brand_list && item.brand_list.length > 0}">
+                                <img v-if="v.ico_name!='others_ico'" v-for="(v,k) in item.brand_list" :src="['https://www.wanguoqiche.com/files/logo/'+v.ico_name+'.jpg']">
+                            </div>
+                            <div class="scope-name">
+                                {{item.main_business}}
+                            </div>
+                        </div>
+                        <div class="item-hd am-u-sm-12" v-if="item.detail_link || item.detail_photo_list.length > 0" ><span class="scope-info-more">更多内容</span></div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 油品 -->
+            <ul class="accessoriesBox am-u-sm-12" v-show="showIndex==5">
+                <li class="accessoriesKids am-u-sm-12" v-for="(item, index) in oilProducts.list">
+                    <div class="item-hd adjustments am-u-sm-12">
+                        <div class="icoName am-u-sm-3">
+                            <img :src="item.cover_url" alt="" v-if="item.cover_url">
+                            <img src="./img/noLogo.png" v-else>
+                        </div>
+                        <div class="item-right am-u-sm-9">
+                            <div class="showName am-u-sm-12">
+                                {{item.name}}
+                                <span class="collection_close" style="float: right;">
+                                    <img src="./img/delete.png" alt="" style="width: 70%;">
+                                </span>
+                            </div>
+                            <div class="am-u-sm-12 numDaetails">
+                                <div class="am-u-sm-7 viewNum viewNum_atd">
+                                    <!-- <p>
+                                        <img class="icon" src="./img/viewNum.png" alt="">
+                                    </p> -->
+                                    <p class="viewNum_atd"><span>浏览：</span>{{item.spv_num}}</p>
+                                </div>
+                                <!-- <div class="am-u-sm-5 viewNum noPadding" @click="handleDetails(item)" v-if="item.detail_link || item.detail_photo_list.length > 0">
+                                    <p>
+                                        <img class="icon" src="./img/details.png" alt="">
+                                    </p>
+                                    <p>详情</p>
+                                </div> -->
+                                <div class="am-u-sm-4 active viewNum" @click="collectionMethod(item)" v-if="item.collect_status == 1">
+                                   <!--  <p style="line-height: 18px;">
+                                       <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                   </p> -->
+                                    <p class="com_r" style="margin-top: 0.07rem;">取消收藏</p>
+                                </div>
+                                <div class="am-u-sm-4 viewNum" @click="collectionMethod(item)" v-else>
+                                    <!-- <p style="line-height: 18px;">
+                                        <i class="iconfont icon-favoritesfilling collectionIconIng"></i>
+                                    </p> -->
+                                    <p class="com_col com_r" style="margin-top: 0.07rem;">收藏店铺</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-bd am-u-sm-12">
+                        <!-- <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.tel" @click="callP(item.tel,'seat',item.id)">
+                            <img src="./img/telNum.png" alt=""> {{item.tel}}
+                        </div>
+                        <div class="am-u-sm-6 userInfoDiv callPhone" v-if="item.contact_tel" @click="callP(item.contact_tel,'mobile',item.id)">
+                            <img src="./img/tel.png" alt=""> {{item.contact_tel}}
+                        </div> -->
+
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.wechat">
+                            <img src="./img/weixin.png" alt=""> {{item.wechat}}
+                        </div>
+
+                        <div class="am-u-sm-6 userInfoDiv" v-if="item.qq">
+                            <img src="./img/qq.png" alt=""> {{item.qq}}
+                        </div>
+                        <div class="am-u-sm-12 userInfoDiv addres">
+                            <img src="./img/addres.png" alt="">
+                            <span>{{item.province}}{{item.city}}{{item.address}}</span>
+                        </div>
+                    </div>
+                    <div class="item-ft am-u-sm-12" @click="handleDetails(item)">
+                        <div class="scope-img am-u-sm-3">
+                            <img src="./img/scope.png" alt="">
+                            <p>经营范围</p>
+                        </div>
+                        <div class="scope-info am-u-sm-9 userInfoDiv">
+                            <div class="scope-logo" :class="{one: item.brand_list && item.brand_list.length > 0}">
+                                <img v-if="v.ico_name!='others_ico'" v-for="(v,k) in item.brand_list" :src="['https://www.wanguoqiche.com/files/logo/'+v.ico_name+'.jpg']">
+                            </div>
+                            <div class="scope-name">
+                                {{item.main_business}}
+                            </div>
+                        </div>
+                        <div class="item-hd am-u-sm-12" v-if="item.detail_link || item.detail_photo_list.length > 0" ><span class="scope-info-more">更多内容</span></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 暂无数据-->
+        <div class="am-u-sm-12 temporary" v-show="searchNoData">
+            <ul class="am-u-sm-12">
+                <li class="am-u-sm-12">
+                    <img src="./img/noData.png" class="noDataImg" alt="">
+                    <p class="errorTip">未找到结果</p>
+                </li>
+            </ul>
+        </div>
+        <p v-if="showNationwide" class="checkMore am-u-sm-12" @click="searchAllHandle">查看更多城市的搜索结果</p>
+        <!-- 提示框 -->
+        <div class="boxLists" v-show="tip">
+            <div class="divFont">
+                <img :src="imgUrl" alt="" />
+                <p>{{textBox}}</p>
+            </div>
+        </div>
+
+    </div>
+    <script src="js/flexible.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="js/vue.js"></script> -->
+    <script src="js/jquery3.3.1.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/jnsApi.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        var app, obj;
+        $(function () {
+            app = new Vue({
+                el: '#app',
+                data: {
+                    items: ['欧美', '日韩', '国产', '拆车件', '通用件', '油品'],
+                    bannersType: ['EABanners','JKBanners','CBanners'],
+                    parts: ['carParts', 'generalParts', 'oilProducts'],
+                    showIndex: 0,                           //现实的Tab索引，用来控制Tab切换和搜索控制 
+                    showBanners: true,                     //是否显示banners
+                    showBannerDetails: false,               //是否显示品牌详细信息
+                    showParts: false,                       //是否显示部件油品
+                    showNationwide: false,                   //是否显示展示全国按钮
+                    isSearchBanner: false,                  //是否正在搜索品牌
+                    isTabSearch: false,                     //tab查询标志位
+                    searchNoData: false,                    //显示无数据提示
+                    tip: false,                             //收藏Toast显示
+                    lock: false,
+                    listType: 'more',
+                    pagesize: 10,
+                    postData: {                             //请求数据参数
+                        token: '',
+                        sort: ''
+                    },
+                    postData2: {                             //请求数据参数
+                        token: '',
+                        keyword: '',
+                        sort: '',
+                        is_other_city: 0,
+                        page: 1,
+                        pagesize: 5
+                    },
+
+                    searchValue: '',
+                    pleft: '34%',                           //输入框图标的位置
+                    placeholder_txt: '输入品牌名',
+
+                    textBox: '',                            //收藏/取消收藏提示文案
+                    imgUrl: './img/rightLogo.png',
+                    historyArr: [],
+                    country_banners: [                               //车系品牌
+                        {
+                            type: 0,
+                            banners: []
+                        },
+                        {
+                            type: 1,
+                            banners: []
+                        },
+                        {
+                            type: 2,
+                            banners: []
+                        }
+                    ],
+                    carParts: { //拆车件
+                        list: [],
+                        total: Number,
+                        page: 1,
+                        is_other_city: 0
+                    },
+                    generalParts: { //通用件
+                        list: [],
+                        total: Number,
+                        page: 1,
+                        is_other_city: 0
+                    },
+                    oilProducts: {  //油品
+                        list: [],
+                        total: Number,
+                        page: 1,
+                        is_other_city: 0
+                    },
+                    bannerDetails: [],                               //品牌详细信息
+                    EABanners: [],                                   //欧美品牌
+                    JKBanners: [],                                   //日韩品牌
+                    CBanners: [],                                    //国产品牌
+                    searchRes: []
+                },
+                methods: {
+                    returnLink: function () {
+                        window.location.href = 'index.html';
+                    },
+                    tab_switch: function (index) {
+                        if (this.showIndex == index) {
+                            return false;
+                        }
+                        this.isTabSearch = true;
+                        this.showIndex = index;
+                        this.showBannerDetails = false;
+                        this.searchValue = '';
+                        
+                        if (index > 2) {
+                            this.placeholder_txt = "输入配件名称或公司名";
+                            this.pleft = '24%';
+                            this.showParts = true;
+                            this.showBanners = false;
+                            //this.showNationwide = true;
+                            this.postData2.keyword = '';
+                            this.postData2.is_other_city = 0;
+                            this.getBannerData(index);
+                        } else {
+                            this.placeholder_txt = "输入品牌名";
+                            this.pleft = '34%';
+                            this.showParts = false;
+                            this.showBanners = true;
+                            this.showNationwide = false;
+                            if (this.country_banners[this.showIndex].banners.length > 0) {
+                                this.searchNoData = false;
+                            } else {
+                                this.searchNoData = true;
+                            }
+                        }
+                    },
+                    searchAllHandle: function () {//搜索全部城市
+                        var temp = this.parts[this.showIndex-3];
+                        this[temp] = {list: [],total: Number,page: 1,is_other_city: 1};
+                        this.postData2.is_other_city = 1;
+                        this.getBannerData(this.showIndex);
+                        this.showNationwide = false;
+                        $(window).scrollTop(0);
+                    },
+                    searchKeyWordHandle: function (str, loadingBool) { // 搜索关键字,loadingBool是否loading
+                        if (!str) {    //设置搜索历史
+                            var historyStr = localStorage.getItem('history') || '';
+                            if (historyStr) {
+                                historyStr += ',' + this.searchValue;
+                            } else {
+                                historyStr += this.searchValue;
+                            }
+                            localStorage.setItem('history', historyStr);
+                        }
+                        window.sessionStorage.setItem('cacheBrandName', str ? str : this.searchValue);  //设置品牌名称缓存
+                        if (this.showIndex > 2) {
+                            var url = '/QualityMerchant/Merchant/getMerchantList';
+                            var self = this;
+                            if (!window.sessionStorage.getItem('cityCache') && self.listType != 'collection') { //判断是否有常用城市
+                                self.postData2.city = window.localStorage.getItem('city');
+                            }
+                            self.postData2.sort = self.items[self.showIndex];
+                            self.postData2.keyword = str;
+                            self.postData2.is_other_city = 0;
+                            self.postData2.page = 1;
+                            _c.post(url, self.postData2, function (res) {
+                                if (res.code == 20000) {
+                                    var temp = self.parts[self.showIndex - 3];
+                                    if (res.data.list.length > 0) {
+                                        self.searchNoData = false;
+                                        self.searchRes = res.data.list;
+                                        self[temp].list = res.data.list;
+                                        self[temp].total = res.total;
+
+                                    } else {    //清空数据
+                                        self[temp].list = [];
+                                        self[temp].page = 1;
+                                        self.searchNoData = true;
+                                    }
+                                    // if (res.data.is_other_city == 1) {
+                                    //     self.showNationwide = true;
+                                    // } else {
+                                    //     self.showNationwide = false;
+                                    // }
+                                    self.showSearchRes = true;
+                                }
+                                if (self.postData2.keyword.trim() != '') {
+                                    window.sessionStorage.setItem('cacheBrandName', self.postData2.keyword);
+                                }
+                            }, loadingBool);
+                        }
+
+                    },
+
+                    closeHandle: function (index) {
+                        this.historyArr.splice(index, 1);
+                        if (this.historyArr.length > 0) {
+                            var tempHistoryStr = this.historyArr.join(',');
+                            var tempHistoryArr = tempHistoryStr.split(',').reverse();
+                            localStorage.setItem('history', tempHistoryArr.join(','));
+                        } else {
+                            localStorage.setItem('history', '');
+                        }
+
+                    },
+
+                    callP: function (phone, type, id) { //拨打手机号码
+                        var token = window.localStorage.getItem('token');
+                        var objDatas = {};
+                        objDatas.token = token;
+                        objDatas.event_type = 2;
+                        objDatas.event_stype = 1;
+                        objDatas.value1 = id;
+                        objDatas.value2 = phone;
+                        objDatas.event_gstype = (type == 'seat') ? 1 : 2;
+                        this.callRequest(objDatas);
+                        _c.callphone(window.localStorage.getItem('status'), phone);
+                    },
+                    callRequest: function (objDatas) { //点击量
+                        _c.post('/Event/EventLog/addEventLog', objDatas, function (res) { }, true);
+                    },
+                    variousTypes: function (type, brandName) {
+                        this.showBanners = false;
+                        this.showBannerDetails = true;
+                        this.searchValue = brandName;
+
+                        window.sessionStorage.setItem('cacheBrandName', brandName);//设置品牌名称缓存
+                        window.location.href = "./listOfAccessories.html?listType=" + type;
+                    },
+
+                    collectionMethod: function (item) {  //收藏
+
+                        var obj = {};
+                        var url = '';
+                        var self = this;
+                        var status = item.collect_status;
+                        obj.token = self.postData.token;
+                        obj.merchant_id = item.id;
+                        url = status == 0 ? '/QualityMerchant/Merchant/addCollect' : '/QualityMerchant/Merchant/cancelCollect';
+                        _c.post(url, obj, function (res) {
+                            if (res.code == 20000) {
+                                self.tip = true;
+                                if (status === 0) {
+                                    item.collect_status = 1;
+                                    self.textBox = '收藏成功';
+                                } else {
+                                    item.collect_status = 0;
+                                    self.textBox = '取消成功';
+                                }
+                                self.imgUrl = './img/rightLogo.png';
+                            } else {
+                                self.textBox = '操作超时';
+                                self.imgUrl = './img/overTime.png';
+                            }
+                            setTimeout(function () {
+                                self.tip = false;
+                            }, 1000);
+                        });
+                        //}
+                    },
+
+                    search_history: function () { // 搜索记录
+                        this.historyArr = window.localStorage.getItem('history') || '';
+                    },
+                    handleDetails: function (item) {//详情
+                        //如果有更多就执行点击操作,else 就执行冒泡处理
+                        if(item.detail_link || item.detail_photo_list.length > 0){
+                            window.sessionStorage.setItem('cacheName', item.name);//设置商户名称
+                            var goBack = 3;
+                            if (this.listType == 'collection') { //收藏列表
+                                goBack = 2;
+                            } else if (this.listType == 'more') {
+                                goBack = 5;
+                            }
+                            if (this.postData.is_other_city == 1) {
+                                goBack = 4;
+                            }
+                            window.location.href = "./showDetails.html?goBack=" + goBack + "&merchant_id=" + item.id;
+                        }else{
+                            //不执行跳转
+                        }
+                    },
+                    getBannerData: function (type, page) {  //获取不同国家的车系品牌, 0：欧美   1：日韩  2：国产 3：拆车件  4：通用件  5：油品
+                        var self = this, url, pData;
+                        if (type < 3) {
+                            self.postData.sort = self.items[type];
+                            pData = self.postData;
+                            url = '/QualityMerchant/Brand/getBrandList';
+                        } else {
+                            self.postData2.sort = self.items[type];
+                            self.postData2.page = page ? page : 1;
+                            pData = self.postData2;
+                            url = '/QualityMerchant/Merchant/getMerchantList';
+                        }
+                        _c.post(url, pData, function (res) {
+                            self.isTabSearch = false;
+                            self.lock = false;
+                            var temp = self.parts[type - 3];
+                            if (res.code == "20000" && res.data.list.length > 0) {
+                                self.searchNoData = false;
+                                if (type == 0 || type == '欧美') {
+                                    self.country_banners[0].banners = res.data.list;
+                                    self.EABanners = self.sortBanners(res.data.list);
+                                } else if (type == 1 || type == '日韩') {
+                                    self.country_banners[1].banners = res.data.list;
+                                    self.JKBanners = self.sortBanners(res.data.list);
+                                } else if (type == 2 || type == '国产') {
+                                    self.country_banners[2].banners = res.data.list;
+                                    self.CBanners = self.sortBanners(res.data.list);
+                                } else if (page) {
+                                    self[temp].list = self[temp].list.concat(res.data.list ? res.data.list : []);
+                                    self[temp].total = res.total;
+                                    self[temp].page = res.page;
+                                } else if (type > 2 && !page) {
+									//4：通用件  5：油品
+                                    self[temp].list = res.data.list ? res.data.list : [];
+                                    self[temp].total = res.total;
+                                    self[temp].page = res.page;
+                                }
+                                // if(res.data.is_other_city==1){
+                                //     self.showNationwide = true;
+                                // }else{
+                                //     self.showNationwide = false;
+                                // }
+								
+                            } else {
+								//拆车件执行函数
+								if(self[temp]){
+									self[temp].list = res.data.list ? res.data.list : [];
+									self[temp].total = res.total;
+									self[temp].page = res.page;
+								}
+								
+								//以上新加的
+                                self.searchNoData = true;
+                            }
+                            if(res.data.is_other_city==0||!res.data.is_other_city){
+                                self.showNationwide = false;
+                            }else{
+                                self.showNationwide = true;
+                            }    
+                        })
+                    },
+                    bannerSearch: function(){
+                        var temp = this[this.bannersType[this.showIndex]].toString().toLowerCase();
+                        if(temp.indexOf(this.searchValue.toLowerCase()) == -1){
+                          this.searchNoData = true;
+                        }else {
+                          this.searchNoData = false;
+                        }
+                    },
+                    sortBanners: function(banners){
+                        var arr = [];
+                        if(banners.length > 0){
+                            for (var i=0 ; i < banners.length ; i++){
+                                arr.push(banners[i].brandName);
+                            }
+                        }
+                        return arr;
+                    },
+                    initData: function () { //
+                        this.postData2.token = this.postData.token = _c.getQueryString('token') ? _c.getQueryString('token') : window.localStorage.getItem('token');
+                        localStorage.setItem('token', this.postData.token);
+                        this.getBannerData(0);
+                        this.getBannerData(1);
+                        this.getBannerData(2);
+                    }
+
+                },
+
+                created: function () {
+                    this.initData();
+                },
+                watch: {
+                    'searchValue': function (val) {
+                        var self = this;
+                        clearTimeout(this.timeOut);
+
+                        if (self.showIndex < 3 || self.isTabSearch) { //搜索品牌的时候不触发自动搜索
+                            this.bannerSearch();
+                            if (self.searchValue == '') {
+                                self.showBanners = true;
+                                this.showBannerDetails = false;
+                                self.isSearchBanner = false;
+                            } else {
+                                self.isSearchBanner = true;
+                            }
+                            return false;
+                        }
+
+                        this.timeOut = setTimeout(function () {
+                            self.searchKeyWordHandle(self.searchValue, self.showSearchRes);
+                        }, 500);
+                    }
+                },
+            }),
+
+                obj = {
+                    init: function () {
+                        obj.bind();
+                    },
+                    bind: function () {
+
+                        $(window).on('scroll', function () {
+                            var domHeight = $('#app').height();
+                            if (domHeight - $(window).scrollTop() - $(window).height() < 30) {
+                                var currentTotal, currentPagesize, currentPage;
+                                currentTotal = app[app.parts[app.showIndex - 3]].total;
+                                currentPagesize = app.postData2.pagesize;
+                                currentPage = app[app.parts[app.showIndex - 3]].page;
+
+                                if (currentTotal > currentPagesize * currentPage) {
+                                    if (!app.lock) {
+                                        var page = app[app.parts[app.showIndex - 3]].page + 1;
+                                        app.lock = true;
+                                        app.getBannerData(app.showIndex, page);
+                                    }
+                                }
+                            }
+                        })
+
+
+                    }
+                }
+            obj.init();
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+.am-u-sm-12{
+    padding: 0;
+}
+#app{
+    padding-top: 40px;
+}
+
+/*头部导航栏*/
+.header {
+    height: 40px;
+    background: #46aef7;
+    font-size: .45rem;
+    color: #fff;
+    border-bottom: 1px solid #46aef7;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header ul, .header ul li {
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+}
+
+.header_center {
+    text-align: center;
+}
+
+.header_right {
+    font-size: .42rem;
+    text-align: right;
+    padding-right: 10px !important;
+    cursor: pointer;
+}
+
+.header_left {
+    font-size: .6rem;
+    padding-left: 10px !important;
+    cursor: pointer;
+    position: relative;
+}
+.header_left img{
+    position: absolute;
+    top: 26%;
+    left: 9px;
+    width: 10px;
+    height: 18px;
+}
+
+/*图表*/
+
+.logo{
+    padding: 0;
+}
+.logo ul{
+    padding: 0;
+    position: relative;
+}
+.logo ul li img{
+    width: 100%;
+    cursor: pointer;
+}
+.logo .inputSearch{
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 100%;
+}
+.logo .inputSearch input{
+    width: 95%;
+    display: block;
+    margin: 0 auto;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px;
+    text-align: center;
+    font-size: .36rem;
+    color: #dbdbdb;
+    cursor: pointer;
+}
+/*搜索*/
+.inputSearch{
+    position: relative;
+}
+.searchMrrio{
+    position: absolute;
+    top: 7px;
+    left: 24%;
+    width: 18px!important;
+    height: 18px;
+}
+/*品牌区*/
+.brandArea{
+    height: 45px;
+    line-height: 45px;
+    background: #fff;
+    margin-top: 10px;
+    border-top: 1px solid #efeff4;
+    border-bottom: 1px solid #efeff4;
+    font-size: .4rem;
+}
+.brandArea ul{
+    padding: 0;
+}
+.brandArea ul li{
+    padding: 0;
+}
+.brandArea ul li:nth-child(1){
+    padding-left: 1.2rem;
+}
+.brandArea ul li:nth-child(2){
+    text-align: right;
+    padding-right: 4%;
+    cursor: pointer;
+    color:#46aef7;
+}
+.brandImg{
+    width: 0.5rem;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    margin-top: -.25rem;
+}
+.brandContent{
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+.brandContent img{
+    width: 50px;
+    height: 40px;
+}
+.brandContent ul li{
+    padding: 10px;
+    text-align: center;
+    float: left;
+}
+.brandContent ul li p{
+    font-size: .35rem;
+    padding: 5px 0px 5px 0px;
+}
+[class*=am-u-]+[class*=am-u-]:last-child {
+    float: left;
+}
+/*底部区域*/
+.bottomBox{
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    background: #efeff4;
+    text-align: center;
+    color: #bebec1;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+/**/
+.partsLibrarys{
+  padding-bottom: 0px;
+}
+@media screen and (min-width: 650px) {
+  .logo .inputSearch input{
+    height:40px;
+    line-height:40px;
+  }
+  .searchMrrio{
+    top: 9px;
+    width: 21px!important;
+    height: 21px;
+  }
+}
+/**/
+.cityParent{
+    position: relative;
+}
+.blueArrowName{
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    width: 2.5%;
+    margin-top: -2px;
+}
+
+/*
+date:2018-5-2
+name: 优供四期修改
+*/
+.cityArea{
+    padding: 0 4%;
+    line-height: 45px;
+    background: #fff;
+}
+.cityArea span {
+    font-size: 0.35rem;
+    margin: 0 .3rem;
+}
+.commonShop {
+    background: #fff;
+}
+.commonShop li {
+    padding-top: 5px;
+}
+.commonShop li a {
+    display: block;
+}
+.commonShop li img {
+    display: block;
+    width: 100%;
+}

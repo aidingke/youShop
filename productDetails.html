@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="renderer" content="webkit">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="MobileOptimized" content="320">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="x5-orientation" content="portrait">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="browsermode" content="application">
+		<meta name="x5-page-mode" content="app">
+		<meta name="msapplication-tap-highlight" content="no">
+		<link rel="stylesheet" href="./css/amazeui.min.css"/>
+		<link class="css_style" rel="stylesheet" href="./css/common.css" />
+		<script src="js/flexible.js"></script>
+		<script src="js/vue.js"></script>
+<style type="text/css">
+body{
+	background: #f1f1f9!important;
+}
+#app{
+	padding-top: 40px;
+	padding-bottom: 60px;
+}
+/*头部*/
+	.header {
+		height: 40px;
+		background: #46aef7;
+		font-size: .45rem;
+		color: #fff;
+		border-bottom: 1px solid #46aef7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 100;
+	}
+	.header ul, .header ul li {
+		padding: 0;
+		height: 40px;
+		line-height: 40px;
+	}
+	.header_center {
+		text-align: center;
+	}
+	.header_right {
+		font-size: .42rem;
+		text-align: right;
+		padding-right: 10px !important;
+		cursor: pointer;
+	}
+	.header_left {
+		font-size: .6rem;
+		padding-left: 10px !important;
+		cursor: pointer;
+	}
+	.header_left img{
+		position: absolute;
+		top: 26%;
+		left: 9px;
+		width: 10px;
+		height: 18px;
+	}
+/*头部*/
+
+/*内容*/
+.cont-main{
+	position: relative;
+	display: none;
+	overflow: hidden;
+}
+.cont-main img {
+	display: block;
+	width: 100%;
+}
+.foot-main{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background: rgba(255,255,255,0.8);
+}
+.foot-main .buy-btn{
+	display: block;
+	text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    background-color: #46aef7;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    margin: 8px 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+.foot-main .buy-btn:focus{
+	color: #fff;
+	outline: none;
+}
+/*弹窗*/
+.pop-main{
+	display: none;
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 100;
+}
+.pop-conts{
+    width: 80%;
+    background: #fff;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 50%;
+    overflow: hidden;
+}
+.mask_header_box {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    font-size: .45rem;
+    color: #999;
+}
+.mask_header_box img {
+    width: 10%;
+}
+.mask_center_box {
+	padding-bottom: 10px;
+    line-height: 32px;
+    text-align: center;
+    font-size: .42rem;
+    color: #999;
+}
+.mask_btn_box {
+    border-top: 1px solid#e5e5e5;
+    overflow: hidden;
+}
+.mask_btn_box .centerBtn {
+    width: 100%;
+    display: block;
+    text-align: center;
+    padding: 10px;
+    font-size: .42rem;
+    background: #46aef7;
+    color: #fff;
+}
+.call-tel{
+	color: #46aef7;
+	text-decoration: none;
+}
+a.call-tel:focus, a.call-tel:hover{
+	text-decoration: none;
+	outline: none;
+}
+</style>
+	</head>
+	<body style="background-color: #f1f1f9;">
+		<div id="app">
+			<div class="header">
+			   <ul class="am-u-sm-12 clearfix">
+				   <li class="am-u-sm-3 header_left" @click="returnNet"><img src="./img/jt.png" alt=""/></li>
+				   <li class="am-u-sm-6 header_center">产品详情</li>
+				   <li class="am-u-sm-3 header_right" @click="shareMethod">分享</li>
+			   </ul>
+			</div>
+		  	<div class="cont-main">
+		  		<p v-for="(item, index) in renderData">
+		  			<img :src="item" alt="">
+		  		</p>
+		  	</div>
+		  	<div class="foot-main">
+		  		<a class="buy-btn" href="javascript:;">咨询</a>
+		  	</div>
+		  	<!-- 弹窗 -->
+		  	<div class="pop-main">
+		  		<div class="pop-conts">
+		  			<div class="mask_header_box"><img src="./img/xinxi.png" alt=""/> 提示 </div>
+					<div class="mask_center_box">
+						<p>购买请联系{{userName}}</p>
+						<p>联系电话 <a class="call-tel" href="javascript:;">{{phone}}<img src="./img/service_hotline.png" style="width:18px;vertical-align: inherit;padding-left:5px;"></a></p>
+					</div>
+					<div class="mask_btn_box">
+						<span class="centerBtn">我知道了</span>
+					</div>
+		  		</div>
+		  	</div>
+		</div>
+	<script src="js/jquery.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/jnsApi.js"></script>
+	<script src="js/common.js?ver=1.0.1"></script>
+		<!--头部-->
+		<script>
+			$(function(){
+				var vue=new Vue({
+					el:'#app',
+					data:{
+						phone: '',
+						userName: '',
+						postData: {//请求参数
+							token: '',
+				   			goodsId: '',
+						},
+						renderData: [],
+						shareObj:{}
+					},
+					created: function () {
+						this.postData.token = window.localStorage.getItem('token');
+						this.postData.goodsId = window._c.getQueryString('goodsId');
+						this.init();
+					},
+					methods:{
+					   	init: function () {
+					   		var self = this;
+					   		_c.post('/Common/QualityMerchant/getGoodsDetail', this.postData, function (res) {
+					   			if(res.code == 20000) {
+				   					self.renderData = res.data.info.detail_photo;
+									self.shareObj.logo=res.data.info.photo[0];
+									self.shareObj.title=res.data.info.goods_name;
+									self.shareObj.subtitle=res.data.info.goods_title;
+									self.shareObj.shareUrl=window.location.href+'&share=1';
+									consultation = {
+										contactName:res.data.info.contact_name,
+										contactTel:res.data.info.contact_tel
+									}
+					   			} else {
+					   				window.location.href="./openWeb.html";
+					   			}
+					   			$('.cont-main').show();
+					   		}, false);
+					   	},
+						returnNet:function(){
+							window.location.href="./openWeb.html";
+						},
+						shareMethod:function(){
+							var o=this.shareObj;
+							window.jnsApi.share(o);
+						}
+					}
+				});
+				var consultation = null;
+				if(window.localStorage.getItem('consultation')) {
+					consultation = JSON.parse(window.localStorage.getItem('consultation'));
+				}
+
+				var obj={
+					init:function(){
+						this.initPage();
+						this.bind();
+					},
+					initPage:function(){
+						var arrUrl=window.location.href.split('?');
+						var valUrl=arrUrl[1].split('&');
+						var this_obj={};
+						$.each(valUrl,function(i,items){
+							var this_Arr=items.split('=');
+							var key=this_Arr[0];
+							var val=this_Arr[1];
+							this_obj[key]=val;
+						});
+						if(this_obj.share){
+							$('.header_left').hide();
+							$('.header_right').hide();
+							$('.header_center').addClass('am-u-sm-12');
+						}
+					},
+					bind:function(){
+						$('.foot-main').on('click', '.buy-btn', function () {//咨询
+							vue.userName = consultation && consultation.contactName?consultation.contactName:'';
+							vue.phone = consultation && consultation.contactTel?consultation.contactTel: '';
+							$('.pop-main').show();
+						});
+
+						$('.pop-main').on('click', '.centerBtn', function () {//关闭咨询
+							$('.pop-main').hide();
+						});
+						$(".call-tel").on("click",function(){
+							_c.callphone(window.localStorage.getItem('status'),vue.phone);
+						});
+					},
+				};
+				obj.init();
+			})
+		</script>
+	</body>
+</html>
